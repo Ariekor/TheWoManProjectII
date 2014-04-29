@@ -28,17 +28,92 @@ public class Catalogue extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        SP_Catalogue = new javax.swing.JScrollPane();
+        CB_Genre = new javax.swing.JComboBox();
+        BTN_Ajouter = new javax.swing.JButton();
+        BTN_ModPrix = new javax.swing.JButton();
+        BTN_ModQte = new javax.swing.JButton();
+        BTN_Mod = new javax.swing.JButton();
+        BTN_Retirer = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        Menu_Item = new javax.swing.JMenu();
+        MI_Ajouteritem = new javax.swing.JMenuItem();
+        Menu_Joueur = new javax.swing.JMenu();
+        MI_ConsultJoueur = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        CB_Genre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        BTN_Ajouter.setText("Ajouter");
+
+        BTN_ModPrix.setText("Modifier Prix");
+
+        BTN_ModQte.setText("Modifier Qte");
+
+        BTN_Mod.setText("Modifier");
+
+        BTN_Retirer.setText("Retirer");
+
+        Menu_Item.setText("Item");
+
+        MI_Ajouteritem.setText("Ajouter Item");
+        Menu_Item.add(MI_Ajouteritem);
+
+        jMenuBar1.add(Menu_Item);
+
+        Menu_Joueur.setText("Joueurs");
+
+        MI_ConsultJoueur.setText("Consulter Joueur...");
+        Menu_Joueur.add(MI_ConsultJoueur);
+
+        jMenuBar1.add(Menu_Joueur);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(SP_Catalogue, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(BTN_ModPrix, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(BTN_ModQte, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(BTN_Ajouter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(BTN_Retirer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(BTN_Mod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addComponent(CB_Genre, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addComponent(CB_Genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BTN_Ajouter)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BTN_ModPrix)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BTN_ModQte)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BTN_Mod)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BTN_Retirer))
+                    .addComponent(SP_Catalogue, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -80,5 +155,17 @@ public class Catalogue extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BTN_Ajouter;
+    private javax.swing.JButton BTN_Mod;
+    private javax.swing.JButton BTN_ModPrix;
+    private javax.swing.JButton BTN_ModQte;
+    private javax.swing.JButton BTN_Retirer;
+    private javax.swing.JComboBox CB_Genre;
+    private javax.swing.JMenuItem MI_Ajouteritem;
+    private javax.swing.JMenuItem MI_ConsultJoueur;
+    private javax.swing.JMenu Menu_Item;
+    private javax.swing.JMenu Menu_Joueur;
+    private javax.swing.JScrollPane SP_Catalogue;
+    private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }
