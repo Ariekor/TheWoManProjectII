@@ -42,6 +42,7 @@ public class Catalogue extends javax.swing.JFrame {
         MI_ConsultJoueur = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Catalogue");
 
         CB_Genre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
