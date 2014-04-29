@@ -267,7 +267,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="BTN_First">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Premier"/>
+        <Property name="text" type="java.lang.String" value="PREMIER"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_FirstActionPerformed"/>
@@ -275,7 +275,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Previous">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Pr&#xe9;cedent"/>
+        <Property name="text" type="java.lang.String" value="PR&#xc9;C&#xc9;DENT"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_PreviousActionPerformed"/>
@@ -283,7 +283,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Next">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Suivant"/>
+        <Property name="text" type="java.lang.String" value="SUIVANT"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_NextActionPerformed"/>
@@ -291,7 +291,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Last">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Dernier"/>
+        <Property name="text" type="java.lang.String" value="DERNIER"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_LastActionPerformed"/>

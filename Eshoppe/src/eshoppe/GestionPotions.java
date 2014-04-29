@@ -94,7 +94,7 @@ public class GestionPotions extends javax.swing.JDialog {
 
         TGB_Dispo.setText("Oui");
 
-        jLabel11.setText("Éffet Attendu");
+        jLabel11.setText("Effet Attendu");
 
         TA_Effect.setColumns(20);
         TA_Effect.setRows(5);

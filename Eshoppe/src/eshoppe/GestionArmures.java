@@ -95,7 +95,7 @@ public class GestionArmures extends javax.swing.JDialog {
 
         TGB_Dispo.setText("Oui");
 
-        jLabel8.setText("Defense +");
+        jLabel8.setText("Défense +");
 
         jLabel9.setText("Composition");
 

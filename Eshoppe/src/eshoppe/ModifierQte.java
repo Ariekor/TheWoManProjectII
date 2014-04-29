@@ -38,7 +38,6 @@ public class ModifierQte extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(165, 101));
-        setPreferredSize(new java.awt.Dimension(165, 101));
         setResizable(false);
 
         TBX_new.setText("qté");

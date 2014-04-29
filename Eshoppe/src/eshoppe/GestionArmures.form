@@ -279,7 +279,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Defense +"/>
+        <Property name="text" type="java.lang.String" value="D&#xe9;fense +"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="TBX_Efficacite">

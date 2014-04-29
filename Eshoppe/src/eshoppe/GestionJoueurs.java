@@ -110,28 +110,28 @@ public class GestionJoueurs extends javax.swing.JDialog {
         LB_Capital.setMinimumSize(new java.awt.Dimension(180, 14));
         LB_Capital.setPreferredSize(new java.awt.Dimension(180, 14));
 
-        BTN_First.setText("Premier");
+        BTN_First.setText("PREMIER");
         BTN_First.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BTN_FirstActionPerformed(evt);
             }
         });
 
-        BTN_Previous.setText("Précedent");
+        BTN_Previous.setText("PRÉCÉDENT");
         BTN_Previous.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BTN_PreviousActionPerformed(evt);
             }
         });
 
-        BTN_Next.setText("Suivant");
+        BTN_Next.setText("SUIVANT");
         BTN_Next.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BTN_NextActionPerformed(evt);
             }
         });
 
-        BTN_Last.setText("Dernier");
+        BTN_Last.setText("DERNIER");
         BTN_Last.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BTN_LastActionPerformed(evt);

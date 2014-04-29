@@ -56,40 +56,35 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="SP_Catalogue" min="-2" pref="812" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="BTN_ModPrix" max="32767" attributes="0"/>
-                                  <Component id="BTN_ModQte" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="BTN_Ajouter" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="BTN_Retirer" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="BTN_Mod" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
+                      <Component id="SP_Catalogue" pref="635" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="2" attributes="0">
+                          <Component id="BTN_Ajouter" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
+                          <Component id="BTN_Mod" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
+                          <Component id="BTN_Retirer" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
+                          <Component id="BTN_ModPrix" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
+                          <Component id="BTN_ModQte" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="CB_Genre" min="-2" pref="125" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="694" max="32767" attributes="0"/>
+                      <Component id="BTN_Fermer" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Component id="CB_Genre" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="BTN_Ajouter" min="-2" max="-2" attributes="0"/>
@@ -101,10 +96,12 @@
                       <Component id="BTN_Mod" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="BTN_Retirer" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="BTN_Fermer" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="SP_Catalogue" min="-2" pref="429" max="-2" attributes="0"/>
+                  <Component id="SP_Catalogue" pref="356" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -128,28 +125,36 @@
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Ajouter">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ajouter"/>
+        <Property name="text" type="java.lang.String" value="AJOUTER"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_ModPrix">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Modifier Prix"/>
+        <Property name="text" type="java.lang.String" value="MODIFIER PRIX"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_ModQte">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Modifier Qte"/>
+        <Property name="text" type="java.lang.String" value="MODIFIER QT&#xc9;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Mod">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Modifier"/>
+        <Property name="text" type="java.lang.String" value="MODIFIER"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Retirer">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Retirer"/>
+        <Property name="text" type="java.lang.String" value="RETIRER"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="BTN_Fermer">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="FERMER"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_FermerActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
