@@ -12,11 +12,11 @@ package eshoppe;
  */
 public class Catalogue extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Catalogue
-     */
+    private ConnectionOracle conn = new ConnectionOracle();
     public Catalogue() {
         initComponents();
+        conn.setConnection("kellylea", "oracle2");
+        conn.connecter();
     }
 
     /**
