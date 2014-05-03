@@ -164,6 +164,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="MODIFIER"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_ModActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Retirer">
       <Properties>

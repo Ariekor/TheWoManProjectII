@@ -23,7 +23,7 @@ import javax.swing.ListSelectionModel;
  * @author Simon
  */
 public class Catalogue extends javax.swing.JFrame {
-// <editor-fold defaultstate="collapsed" desc="Attributs">
+    // <editor-fold defaultstate="collapsed" desc="Attributs">
     private ConnectionOracle conn = new ConnectionOracle();
     private String SQLGenre = "Select Distinct Genre From Catalogue";
     private String SQLCatalogue = "Select * from vuearmes ";
@@ -49,6 +49,7 @@ public class Catalogue extends javax.swing.JFrame {
     Vector Entete;
     JTable ZeCatalogue;
     // </editor-fold>
+    
     public Catalogue() {
         initComponents();
         conn.setConnection("kellylea", "oracle2");
@@ -57,7 +58,7 @@ public class Catalogue extends javax.swing.JFrame {
         RemplirList();
     }
     
- // <editor-fold defaultstate="collapsed" desc="Remplir catalogue">   
+    // <editor-fold defaultstate="collapsed" desc="Remplir catalogue">   
     private void RemplirList()
     {
         if (CB_Genre.getSelectedItem().toString().equalsIgnoreCase("Arme") )
@@ -455,9 +456,71 @@ public class Catalogue extends javax.swing.JFrame {
         }
     }
     
+   // <editor-fold defaultstate="collapsed" desc="Modification"> 
     
+    private void ModifierSelection()
+    {
+        if (ZeCatalogue.getSelectedColumnCount() != 0)
+        {
+            String genreSelectionner = CB_Genre.getSelectedItem().toString();
+            if (genreSelectionner.equalsIgnoreCase("Arme"))
+            {
+                ModifierArme();
+            }
+            else if (genreSelectionner.equalsIgnoreCase("potion"))
+            {
+                ModifierPotion();
+            }
+            else if( genreSelectionner.equalsIgnoreCase("Habileté"))
+            {
+                ModifierHabilete();
+            }
+            else if( genreSelectionner.equalsIgnoreCase("Armure"))
+            {
+                ModifierArmure();
+            }
+            RemplirList();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Veuillez sélectionner une ligne !" );
+        }
+    }
     
+    private void ModifierArme()
+    {
+        Numint= ObtenirNumSelectedItem();
+        GestionArmes Dialog = new GestionArmes(this, true);
+        Dialog.setParam(Numint, conn);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
+    }
+    private void ModifierArmure()
+    {
+        Numint= ObtenirNumSelectedItem();
+        GestionArmures Dialog = new GestionArmures(this, true);
+        Dialog.setParam(Numint, conn);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
+    }
+    private void ModifierPotion()
+    {
+        Numint= ObtenirNumSelectedItem();
+        GestionHabilites Dialog = new GestionHabilites(this, true);
+        Dialog.setParam(Numint, conn);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
+    }
+    private void ModifierHabilete()
+    {
+        Numint= ObtenirNumSelectedItem();
+        GestionPotions Dialog = new GestionPotions(this, true);
+        Dialog.setParam(Numint, conn);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
+    }
     
+    // </editor-fold>
     
 
     /**
@@ -512,6 +575,11 @@ public class Catalogue extends javax.swing.JFrame {
         });
 
         BTN_Mod.setText("MODIFIER");
+        BTN_Mod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ModActionPerformed(evt);
+            }
+        });
 
         BTN_Retirer.setText("RETIRER");
 
@@ -634,6 +702,10 @@ public class Catalogue extends javax.swing.JFrame {
     private void BTN_ModQteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModQteActionPerformed
         AppelerModifierQte();
     }//GEN-LAST:event_BTN_ModQteActionPerformed
+
+    private void BTN_ModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModActionPerformed
+        ModifierSelection();
+    }//GEN-LAST:event_BTN_ModActionPerformed
 
     /**
      * @param args the command line arguments
