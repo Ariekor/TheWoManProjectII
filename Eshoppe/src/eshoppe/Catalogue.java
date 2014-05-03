@@ -5,6 +5,12 @@
  */
 
 package eshoppe;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,10 +19,28 @@ package eshoppe;
 public class Catalogue extends javax.swing.JFrame {
 
     private ConnectionOracle conn = new ConnectionOracle();
+    private String SQLGenre = "Select Distinct Genre From Catalogue";
+    ResultSet rst ;
     public Catalogue() {
         initComponents();
         conn.setConnection("kellylea", "oracle2");
         conn.connecter();
+        ListCBX();
+    }
+    
+    private void ListCBX()
+    {
+        try
+        {
+            Statement stm = conn.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rst = stm.executeQuery(SQLGenre);
+            CB_Genre.removeAllItems();
+            while(rst.next())
+            {
+                CB_Genre.addItem(rst.getString("genre"));
+            }
+        }
+        catch (SQLException e){}
     }
 
     /**
