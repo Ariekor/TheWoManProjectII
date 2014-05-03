@@ -374,7 +374,20 @@ public class Catalogue extends javax.swing.JFrame {
     
     private void AjouterArme()
     {
-        GestionArmes Dialog = new GestionArmes(this, true);
+        GestionArmes Dialog = new GestionArmes(this, true/*,-1*/);
+        Dialog.setVisible(true);
+    }
+    private void AjouterArmure()
+    {
+        
+    }
+    private void AjouterHabilete()
+    {
+        
+    }
+    private void AjouterPortion()
+    {
+        
     }
     
     
