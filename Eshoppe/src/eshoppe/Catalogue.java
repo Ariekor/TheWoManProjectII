@@ -41,6 +41,7 @@ public class Catalogue extends javax.swing.JFrame {
                                  "FROM catalogue ca\n" +
                                  "INNER JOIN habiletés ha ON ca.numitem = ha.numitem where nomitem like ? \n" +
                                  "ORDER BY numitem ";
+    public int Numint;
     ResultSet rst ;
     Vector Contenu;
     Vector Entete;
@@ -361,35 +362,45 @@ public class Catalogue extends javax.swing.JFrame {
         }
         else if (genreSelectionner.equalsIgnoreCase("potion"))
         {
-
+            AjouterPotion();
         }
         else if( genreSelectionner.equalsIgnoreCase("Habileté"))
         {
-            
+            AjouterHabilete();
         }
         else if( genreSelectionner.equalsIgnoreCase("Armure"))
         {
-            
+            AjouterArmure();
         }
     }
     
     private void AjouterArme()
     {
-        GestionArmes Dialog = new GestionArmes(this, true/*,-1*/);
+        Numint= -1;
+        GestionArmes Dialog = new GestionArmes(this, true);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
     private void AjouterArmure()
     {
-        
+        Numint= -1;
+        GestionArmures Dialog = new GestionArmures(this, true);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
     }
     private void AjouterHabilete()
     {
-        
+        Numint= -1;
+        GestionHabilites Dialog = new GestionHabilites(this, true);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
     }
-    private void AjouterPortion()
+    private void AjouterPotion()
     {
-        
+        Numint= -1;
+        GestionPotions Dialog = new GestionPotions(this, true);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
     }
     
     
