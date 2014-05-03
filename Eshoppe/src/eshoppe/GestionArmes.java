@@ -6,6 +6,8 @@
 
 package eshoppe;
 
+import java.sql.*;
+import javax.swing.*;
 /**
  *
  * @author Isabelle
@@ -18,6 +20,12 @@ public class GestionArmes extends javax.swing.JDialog {
     public GestionArmes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+     //   CBX_Dispo.addItem("NON");
+     //   CBX_Dispo.addItem("OUI");
+        
+     //   remplirValeursDeBase();
+           
+      //  ListGenre();
     }
 
     /**
@@ -50,7 +58,6 @@ public class GestionArmes extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         TBX_Poids = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        TGB_Dispo = new javax.swing.JToggleButton();
         jLabel8 = new javax.swing.JLabel();
         TBX_Efficacite = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -58,6 +65,7 @@ public class GestionArmes extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         CBX_Genre1 = new javax.swing.JComboBox();
         jSeparator1 = new javax.swing.JSeparator();
+        CBX_Dispo = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion Armes");
@@ -93,8 +101,6 @@ public class GestionArmes extends javax.swing.JDialog {
 
         jLabel7.setText("Disponible");
 
-        TGB_Dispo.setText("Oui");
-
         jLabel8.setText("Attaque +");
 
         jLabel9.setText("Composition");
@@ -102,6 +108,8 @@ public class GestionArmes extends javax.swing.JDialog {
         jLabel10.setText("Mains");
 
         CBX_Genre1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        CBX_Dispo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,7 +132,7 @@ public class GestionArmes extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(CBX_Genre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(TBX_Composition, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap(65, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -146,12 +154,13 @@ public class GestionArmes extends javax.swing.JDialog {
                                     .addComponent(TBX_Stock, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(CBX_Genre, javax.swing.GroupLayout.Alignment.LEADING, 0, 182, Short.MAX_VALUE)
-                                    .addComponent(TGB_Dispo, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TBX_Efficacite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TBX_nom, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(0, 20, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(CBX_Genre, javax.swing.GroupLayout.Alignment.LEADING, 0, 237, Short.MAX_VALUE)
+                                        .addComponent(TBX_Efficacite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(TBX_nom, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(CBX_Dispo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(LBL_AjoutOuModif)
@@ -195,10 +204,10 @@ public class GestionArmes extends javax.swing.JDialog {
                         .addComponent(TBX_Poids, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TGB_Dispo)
-                            .addComponent(jLabel7)))
+                            .addComponent(jLabel7)
+                            .addComponent(CBX_Dispo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 14, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -220,7 +229,7 @@ public class GestionArmes extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
                             .addComponent(CBX_Genre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(44, Short.MAX_VALUE))))
         );
 
         pack();
@@ -271,10 +280,94 @@ public class GestionArmes extends javax.swing.JDialog {
             }
         });
     }
+    
+    private void remplirValeursDeBase(){
+        try{
+            LBL_Key.setText(((Integer)rst.getInt("numitem")).toString());                
+            TBX_nom.setText(rst.getString("nomitem"));
+            TBX_Stock.setText(((Integer)rst.getInt("quantite")).toString());
+            TBX_Prix.setText (((Integer)rst.getInt("prix")).toString());
+            //récupérer genre
+      //      TakeItemCBX(CBX_Genre, rst.getString("genre"));
+            //récupérer disponible
+      //      CBX_Dispo.setSelectedIndex((Integer)rst.getInt("dispo").toString());
+            
+            
+         //   TBX_Prix.setText (((Integer)rst.getInt("prix")).toString());
+         //   AfficherItems();
+        }
+        catch(SQLException se){ System.out.println(se);}
+    }
+    
+    public void setParam(int numitem, ConnectionOracle conn)
+    {
+        this.numitem = numitem;
+        this.connBD = conn;
+    }
+ /*   
+    private void vider(){
+         TBX_Nom.setText("");
+         TBX_Prenom.setText("");
+         TBX_Nation.setText("");
+         TBX_Recherche.setText("");
+     }
+    */
+    
+    
+    private void TakeItemCBX(javax.swing.JComboBox C , String NomItem)
+    {
+        for(int i = 0; i < C.getItemCount(); i++)
+        {
+            if (NomItem.equals(C.getItemAt(i).toString()) )
+            {
+                C.setSelectedIndex(i);
+            }
+        }
+    }
+    
+    private void ListGenre()
+    {
+        int i = 0;
+        try
+        {
+            Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rst = stm1.executeQuery(SQLGenre);
+            CBX_Genre.removeAllItems();
+            CBX_Genre1.removeAllItems();
+            while ( rst.next())
+            {
+                CBX_Genre.addItem(rst.getString("genre"));
+                CBX_Genre1.addItem(rst.getString("genre"));
+                i ++;
+            }
+        }
+        catch(SQLException e) {}
+    }
 
+   ConnectionOracle connBD;
+   ResultSet rst ;
+   int  numitem;
+   private String SQLGenre = "Select Distinct Genre From Catalogue";
+ /*  private String sqlArme = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, efficacité, composition, mains\n" +
+                             "FROM catalogue ca\n" +
+                             "INNER JOIN armes ar ON ca.numitem = ar.numitem  where nomitem like ? \n" +
+                             "ORDER BY numitem ";
+   private String sqlArmure = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, efficacité, composition, taille\n" +
+                               "FROM catalogue ca\n" +
+                               "INNER JOIN armures ar ON ca.numitem = ar.numitem where nomitem like ? \n" +
+                               "ORDER BY numitem ";
+   private String sqlPotion = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, effetattendu, duréeeffet\n" +
+                               "FROM catalogue ca\n" +
+                               "INNER JOIN potions po ON ca.numitem = po.numitem where nomitem like ? \n" +
+                               "ORDER BY numitem ";
+   private String sqlHabilite = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, description\n" +
+                                 "FROM catalogue ca\n" +
+                                 "INNER JOIN habiletés ha ON ca.numitem = ha.numitem where nomitem like ? \n" +
+                                 "ORDER BY numitem ";*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Cancel;
     private javax.swing.JButton BTN_OK;
+    private javax.swing.JComboBox CBX_Dispo;
     private javax.swing.JComboBox CBX_Genre;
     private javax.swing.JComboBox CBX_Genre1;
     private javax.swing.JLabel LBL_AjoutOuModif;
@@ -285,7 +378,6 @@ public class GestionArmes extends javax.swing.JDialog {
     private javax.swing.JTextField TBX_Prix;
     private javax.swing.JTextField TBX_Stock;
     private javax.swing.JTextField TBX_nom;
-    private javax.swing.JToggleButton TGB_Dispo;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
