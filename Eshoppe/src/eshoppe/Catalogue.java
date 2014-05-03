@@ -356,7 +356,7 @@ public class Catalogue extends javax.swing.JFrame {
         String genreSelectionner = CB_Genre.toString();
         if (genreSelectionner.equalsIgnoreCase("Arme"))
         {
-            
+            AjouterArme();
         }
         else if (genreSelectionner.equalsIgnoreCase("potion"))
         {
