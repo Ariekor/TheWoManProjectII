@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -54,7 +55,6 @@ public class Catalogue extends javax.swing.JFrame {
         conn.connecter();
         ListCBX();
         RemplirList();
-        
     }
     
  // <editor-fold defaultstate="collapsed" desc="Remplir catalogue">   
@@ -76,6 +76,7 @@ public class Catalogue extends javax.swing.JFrame {
         {
             RemplirListPotion();
         }
+        ZeCatalogue.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
     private void RemplirListArme()
@@ -378,12 +379,14 @@ public class Catalogue extends javax.swing.JFrame {
         {
             AjouterArmure();
         }
+        RemplirList();
     }
       
     private void AjouterArme()
     {
         Numint= -1;
         GestionArmes Dialog = new GestionArmes(this, true);
+        Dialog.setParam(Numint, conn);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
@@ -391,6 +394,7 @@ public class Catalogue extends javax.swing.JFrame {
     {
         Numint= -1;
         GestionArmures Dialog = new GestionArmures(this, true);
+        Dialog.setParam(Numint, conn);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
@@ -398,6 +402,7 @@ public class Catalogue extends javax.swing.JFrame {
     {
         Numint= -1;
         GestionHabilites Dialog = new GestionHabilites(this, true);
+        Dialog.setParam(Numint, conn);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
@@ -405,15 +410,27 @@ public class Catalogue extends javax.swing.JFrame {
     {
         Numint= -1;
         GestionPotions Dialog = new GestionPotions(this, true);
+        Dialog.setParam(Numint, conn);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
     
      // </editor-fold>
     
-    private void ModifierPrix()
+    private void AppelerModifierPrix()
     {
-        
+        if (ZeCatalogue.getSelectedColumnCount() != 0)
+        {
+            Numint = ObtenirNumSelectedItem();
+            ModifierPrix dialog = new ModifierPrix(this, true);
+            dialog.setParam(Numint, conn);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true); 
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Veuillez sélectionner une ligne !" );
+        }
     }
     
     private int ObtenirNumSelectedItem ()
@@ -421,6 +438,26 @@ public class Catalogue extends javax.swing.JFrame {
         int retour = Integer.parseInt(ZeCatalogue.getValueAt(ZeCatalogue.getSelectedRow(), 0).toString());
         return retour;
     }
+    
+    private void AppelerModifierQte()
+    {
+        if (ZeCatalogue.getSelectedColumnCount() != 0)
+        {
+            Numint = ObtenirNumSelectedItem();
+            ModifierQte dialog = new ModifierQte(this, true);
+            dialog.setParam(Numint, conn);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true); 
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Veuillez sélectionner une ligne !" );
+        }
+    }
+    
+    
+    
+    
     
 
     /**
@@ -468,6 +505,11 @@ public class Catalogue extends javax.swing.JFrame {
         });
 
         BTN_ModQte.setText("MODIFIER QTÉ");
+        BTN_ModQte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ModQteActionPerformed(evt);
+            }
+        });
 
         BTN_Mod.setText("MODIFIER");
 
@@ -586,8 +628,12 @@ public class Catalogue extends javax.swing.JFrame {
     }//GEN-LAST:event_MI_AjouteritemActionPerformed
 
     private void BTN_ModPrixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModPrixActionPerformed
-        ModifierPrix();
+        AppelerModifierPrix();
     }//GEN-LAST:event_BTN_ModPrixActionPerformed
+
+    private void BTN_ModQteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModQteActionPerformed
+        AppelerModifierQte();
+    }//GEN-LAST:event_BTN_ModQteActionPerformed
 
     /**
      * @param args the command line arguments

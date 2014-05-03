@@ -15,6 +15,16 @@ public class ModifierPrix extends javax.swing.JDialog {
     /**
      * Creates new form ModifierPrix
      */
+    
+    private int numitem;
+    private ConnectionOracle connBD;
+    
+    public void setParam(int numitem, ConnectionOracle conn)
+    {
+        this.numitem = numitem;
+        this.connBD = conn;
+    }
+    
     public ModifierPrix(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();

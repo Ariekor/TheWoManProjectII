@@ -15,10 +15,20 @@ public class GestionArmures extends javax.swing.JDialog {
     /**
      * Creates new form GestionArmes
      */
+    private int numitem;
+    private ConnectionOracle connBD;
+    
+    public void setParam(int numitem, ConnectionOracle conn)
+    {
+        this.numitem = numitem;
+        this.connBD = conn;
+    }
+    
     public GestionArmures(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.

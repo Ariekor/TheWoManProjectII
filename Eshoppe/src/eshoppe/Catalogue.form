@@ -156,6 +156,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="MODIFIER QT&#xc9;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_ModQteActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Mod">
       <Properties>
