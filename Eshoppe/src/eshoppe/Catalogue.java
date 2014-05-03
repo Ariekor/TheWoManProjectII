@@ -15,13 +15,14 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 
 /**
  *
  * @author Simon
  */
 public class Catalogue extends javax.swing.JFrame {
-
+// <editor-fold defaultstate="collapsed" desc="Attributs">
     private ConnectionOracle conn = new ConnectionOracle();
     private String SQLGenre = "Select Distinct Genre From Catalogue";
     private String SQLCatalogue = "Select * from vuearmes ";
@@ -41,11 +42,12 @@ public class Catalogue extends javax.swing.JFrame {
                                  "FROM catalogue ca\n" +
                                  "INNER JOIN habiletés ha ON ca.numitem = ha.numitem where nomitem like ? \n" +
                                  "ORDER BY numitem ";
-    public int Numint;
+    private int Numint;
     ResultSet rst ;
     Vector Contenu;
     Vector Entete;
     JTable ZeCatalogue;
+    // </editor-fold>
     public Catalogue() {
         initComponents();
         conn.setConnection("kellylea", "oracle2");
@@ -55,6 +57,7 @@ public class Catalogue extends javax.swing.JFrame {
         
     }
     
+ // <editor-fold defaultstate="collapsed" desc="Remplir catalogue">   
     private void RemplirList()
     {
         if (CB_Genre.getSelectedItem().toString().equalsIgnoreCase("Arme") )
@@ -332,6 +335,8 @@ public class Catalogue extends javax.swing.JFrame {
         return v;
     }
     
+    // </editor-fold>
+    
     private void ListCBX()
     {
         try
@@ -353,6 +358,7 @@ public class Catalogue extends javax.swing.JFrame {
         dispose();
     }
     
+     // <editor-fold defaultstate="collapsed" desc="Ajout">   
     private void Ajouter()
     {
         String genreSelectionner = CB_Genre.getSelectedItem().toString();
@@ -373,7 +379,7 @@ public class Catalogue extends javax.swing.JFrame {
             AjouterArmure();
         }
     }
-    
+      
     private void AjouterArme()
     {
         Numint= -1;
@@ -403,6 +409,18 @@ public class Catalogue extends javax.swing.JFrame {
         Dialog.setVisible(true);
     }
     
+     // </editor-fold>
+    
+    private void ModifierPrix()
+    {
+        
+    }
+    
+    private int ObtenirNumSelectedItem ()
+    {
+        int retour = Integer.parseInt(ZeCatalogue.getValueAt(ZeCatalogue.getSelectedRow(), 0).toString());
+        return retour;
+    }
     
 
     /**
@@ -443,6 +461,11 @@ public class Catalogue extends javax.swing.JFrame {
         });
 
         BTN_ModPrix.setText("MODIFIER PRIX");
+        BTN_ModPrix.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ModPrixActionPerformed(evt);
+            }
+        });
 
         BTN_ModQte.setText("MODIFIER QTÉ");
 
@@ -559,8 +582,12 @@ public class Catalogue extends javax.swing.JFrame {
     }//GEN-LAST:event_BTN_AjouterActionPerformed
 
     private void MI_AjouteritemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MI_AjouteritemActionPerformed
-        // TODO add your handling code here:
+        Ajouter();
     }//GEN-LAST:event_MI_AjouteritemActionPerformed
+
+    private void BTN_ModPrixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModPrixActionPerformed
+        ModifierPrix();
+    }//GEN-LAST:event_BTN_ModPrixActionPerformed
 
     /**
      * @param args the command line arguments
