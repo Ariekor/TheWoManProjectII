@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -353,7 +354,7 @@ public class Catalogue extends javax.swing.JFrame {
     
     private void Ajouter()
     {
-        String genreSelectionner = CB_Genre.toString();
+        String genreSelectionner = CB_Genre.getSelectedItem().toString();
         if (genreSelectionner.equalsIgnoreCase("Arme"))
         {
             AjouterArme();
@@ -375,6 +376,7 @@ public class Catalogue extends javax.swing.JFrame {
     private void AjouterArme()
     {
         GestionArmes Dialog = new GestionArmes(this, true/*,-1*/);
+        Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
     private void AjouterArmure()
@@ -454,6 +456,11 @@ public class Catalogue extends javax.swing.JFrame {
         Menu_Item.setText("Item");
 
         MI_Ajouteritem.setText("Ajouter Item");
+        MI_Ajouteritem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MI_AjouteritemActionPerformed(evt);
+            }
+        });
         Menu_Item.add(MI_Ajouteritem);
 
         jMenuBar1.add(Menu_Item);
@@ -539,6 +546,10 @@ public class Catalogue extends javax.swing.JFrame {
     private void BTN_AjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AjouterActionPerformed
        Ajouter();
     }//GEN-LAST:event_BTN_AjouterActionPerformed
+
+    private void MI_AjouteritemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MI_AjouteritemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MI_AjouteritemActionPerformed
 
     /**
      * @param args the command line arguments
