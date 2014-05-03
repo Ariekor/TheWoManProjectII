@@ -50,7 +50,6 @@ public class GestionArmures extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         TBX_Poids = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        TGB_Dispo = new javax.swing.JToggleButton();
         jLabel8 = new javax.swing.JLabel();
         TBX_Efficacite = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -58,6 +57,7 @@ public class GestionArmures extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         CBX_Taille = new javax.swing.JComboBox();
         jSeparator1 = new javax.swing.JSeparator();
+        CBX_Dispo = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion Armes");
@@ -93,8 +93,6 @@ public class GestionArmures extends javax.swing.JDialog {
 
         jLabel7.setText("Disponible");
 
-        TGB_Dispo.setText("Oui");
-
         jLabel8.setText("Défense +");
 
         jLabel9.setText("Composition");
@@ -102,6 +100,8 @@ public class GestionArmures extends javax.swing.JDialog {
         jLabel10.setText("Taile");
 
         CBX_Taille.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        CBX_Dispo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,20 +138,20 @@ public class GestionArmures extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(CBX_Genre, javax.swing.GroupLayout.Alignment.LEADING, 0, 182, Short.MAX_VALUE)
+                                    .addComponent(TBX_Efficacite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TBX_nom, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(0, 19, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(LBL_Key, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(TBX_Prix)
                                         .addComponent(TBX_Poids, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(TBX_Stock, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(CBX_Genre, javax.swing.GroupLayout.Alignment.LEADING, 0, 182, Short.MAX_VALUE)
-                                    .addComponent(TGB_Dispo, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TBX_Efficacite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TBX_nom, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(0, 19, Short.MAX_VALUE))))
+                                    .addComponent(TBX_Stock, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(CBX_Dispo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(LBL_AjoutOuModif)
@@ -195,10 +195,10 @@ public class GestionArmures extends javax.swing.JDialog {
                         .addComponent(TBX_Poids, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TGB_Dispo)
-                            .addComponent(jLabel7)))
+                            .addComponent(jLabel7)
+                            .addComponent(CBX_Dispo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 15, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -206,7 +206,7 @@ public class GestionArmures extends javax.swing.JDialog {
                     .addComponent(jLabel8))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 72, Short.MAX_VALUE)
+                        .addGap(18, 71, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(BTN_OK)
                             .addComponent(BTN_Cancel))
@@ -220,7 +220,7 @@ public class GestionArmures extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
                             .addComponent(CBX_Taille, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(43, Short.MAX_VALUE))))
         );
 
         pack();
@@ -275,6 +275,7 @@ public class GestionArmures extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Cancel;
     private javax.swing.JButton BTN_OK;
+    private javax.swing.JComboBox CBX_Dispo;
     private javax.swing.JComboBox CBX_Genre;
     private javax.swing.JComboBox CBX_Taille;
     private javax.swing.JLabel LBL_AjoutOuModif;
@@ -285,7 +286,6 @@ public class GestionArmures extends javax.swing.JDialog {
     private javax.swing.JTextField TBX_Prix;
     private javax.swing.JTextField TBX_Stock;
     private javax.swing.JTextField TBX_nom;
-    private javax.swing.JToggleButton TGB_Dispo;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
