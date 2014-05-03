@@ -5,12 +5,15 @@
  */
 
 package eshoppe;
+import java.awt.BorderLayout;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -20,12 +23,172 @@ public class Catalogue extends javax.swing.JFrame {
 
     private ConnectionOracle conn = new ConnectionOracle();
     private String SQLGenre = "Select Distinct Genre From Catalogue";
+    private String SQLCatalogue = "Select * from vuearmes ";
+    private String sqlArme = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, efficacité, composition, mains\n" +
+                             "FROM catalogue ca\n" +
+                             "INNER JOIN armes ar ON ca.numitem = ar.numitem  where nomitem like ? \n" +
+                             "ORDER BY numitem ";
+    private String sqlArmure = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, efficacité, composition, taille\n" +
+                               "FROM catalogue ca\n" +
+                               "INNER JOIN armures ar ON ca.numitem = ar.numitem where nomitem like ? \n" +
+                               "ORDER BY numitem ";
+    private String sqlPotion = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, effetattendu, duréeeffet\n" +
+                               "FROM catalogue ca\n" +
+                               "INNER JOIN potions po ON ca.numitem = po.numitem where nomitem like ? \n" +
+                               "ORDER BY numitem ";
+    private String sqlHabilite = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, description\n" +
+                                 "FROM catalogue ca\n" +
+                                 "INNER JOIN habiletés ha ON ca.numitem = ha.numitem where nomitem like ? \n" +
+                                 "ORDER BY numitem ";
     ResultSet rst ;
+    Vector Contenu;
+    Vector Entete;
+    JTable ZeCatalogue;
     public Catalogue() {
         initComponents();
         conn.setConnection("kellylea", "oracle2");
         conn.connecter();
         ListCBX();
+        RemplirList();
+        
+    }
+    
+    private void RemplirList()
+    {
+        if (CB_Genre.getSelectedItem().toString().equalsIgnoreCase("Arme") )
+        {
+            RemplirListArme();
+        }
+        else if (CB_Genre.getSelectedItem().toString().equalsIgnoreCase("Armure") )
+        {
+            RemplirListArmure();
+        }
+    }
+    private void RemplirListArme()
+    {
+        try
+        {
+            PreparedStatement stm = conn.getConnection().prepareStatement(sqlArme, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stm.setString(1, TB_Type.getText() + "%");
+            rst = stm.executeQuery();
+            Contenu = remplirVecteurArme(rst);
+            Entete = creerEnteteArme();
+            ZeCatalogue = new JTable(Contenu,Entete);
+            SP_Catalogue.setViewportView(ZeCatalogue);
+            this.getContentPane().add(SP_Catalogue,BorderLayout.CENTER);
+            SP_Catalogue.validate();
+            
+        }
+        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
+        
+    }
+    private void RemplirListArmure()
+    {
+        try
+        {
+            PreparedStatement stm = conn.getConnection().prepareStatement(sqlArmure, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stm.setString(1, TB_Type.getText() + "%");
+            rst = stm.executeQuery();
+            Contenu = remplirVecteurArmure(rst);
+            Entete = creerEnteteArmure();
+            ZeCatalogue = new JTable(Contenu,Entete);
+            SP_Catalogue.setViewportView(ZeCatalogue);
+            this.getContentPane().add(SP_Catalogue,BorderLayout.CENTER);
+            SP_Catalogue.validate();
+            
+        }
+        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
+        
+    }
+    
+    private Vector creerEnteteArme()
+    {
+        Vector vectEntete = new Vector();
+        vectEntete.add("NumItem"); //1
+        vectEntete.add("NomItem"); //2
+        vectEntete.add("Prix");     //3
+        vectEntete.add("Quantite"); //4
+        vectEntete.add("Genre");    //5
+        vectEntete.add("Disponible");//6
+        vectEntete.add("Poids");     //7
+        vectEntete.add("Image");        //8
+        vectEntete.add("Efficacité");   //9
+        vectEntete.add("Composition");  //10
+        vectEntete.add("Mains");     //11
+        return vectEntete;        
+    }
+    
+    
+    private Vector creerEnteteArmure()
+    {
+        Vector vectEntete = new Vector();
+        vectEntete.add("NumItem"); //1
+        vectEntete.add("NomItem"); //2
+        vectEntete.add("Prix");     //3
+        vectEntete.add("Quantite"); //4
+        vectEntete.add("Genre");    //5
+        vectEntete.add("Disponible");//6
+        vectEntete.add("Poids");     //7
+        vectEntete.add("Image");        //8
+        vectEntete.add("Efficacité");   //9
+        vectEntete.add("Composition");  //10
+        vectEntete.add("taille");     //11
+        return vectEntete;        
+    }
+    
+    private Vector remplirVecteurArmure(ResultSet rst){
+        Vector v = new Vector();
+        Vector ligne = null;
+        try
+        {            
+            while (rst.next()){
+                ligne = new Vector();
+                ligne.add(rst.getInt(1));
+                ligne.add(rst.getString(2));
+                ligne.add(rst.getInt(3));
+                ligne.add(rst.getInt(4));
+                ligne.add(rst.getString(5));
+                ligne.add(rst.getInt(6));
+                ligne.add(rst.getInt(7));
+                ligne.add(rst.getString(8));
+                ligne.add(rst.getInt(9));
+                ligne.add(rst.getString(10));
+                ligne.add(rst.getString(11));
+                v.add(ligne); 
+            }            
+        }
+        catch (SQLException se)
+        {
+            JOptionPane.showMessageDialog(this, se);
+        }
+        return v;
+    }
+    private Vector remplirVecteurArme(ResultSet rst){
+        Vector v = new Vector();
+        Vector ligne = null;
+        try
+        {            
+            while (rst.next()){
+                ligne = new Vector();
+                ligne.add(rst.getInt(1));
+                ligne.add(rst.getString(2));
+                ligne.add(rst.getInt(3));
+                ligne.add(rst.getInt(4));
+                ligne.add(rst.getString(5));
+                ligne.add(rst.getInt(6));
+                ligne.add(rst.getInt(7));
+                ligne.add(rst.getString(8));
+                ligne.add(rst.getInt(9));
+                ligne.add(rst.getString(10));
+                ligne.add(rst.getInt(11));
+                v.add(ligne); 
+            }            
+        }
+        catch (SQLException se)
+        {
+            JOptionPane.showMessageDialog(this, se);
+        }
+        return v;
     }
     
     private void ListCBX()
@@ -42,6 +205,8 @@ public class Catalogue extends javax.swing.JFrame {
         }
         catch (SQLException e){}
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,6 +225,8 @@ public class Catalogue extends javax.swing.JFrame {
         BTN_Mod = new javax.swing.JButton();
         BTN_Retirer = new javax.swing.JButton();
         BTN_Fermer = new javax.swing.JButton();
+        TB_Type = new javax.swing.JTextField();
+        BTN_Filtrer = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         Menu_Item = new javax.swing.JMenu();
         MI_Ajouteritem = new javax.swing.JMenuItem();
@@ -85,6 +252,13 @@ public class Catalogue extends javax.swing.JFrame {
         BTN_Fermer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BTN_FermerActionPerformed(evt);
+            }
+        });
+
+        BTN_Filtrer.setText("Filtrer");
+        BTN_Filtrer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_FiltrerActionPerformed(evt);
             }
         });
 
@@ -120,7 +294,13 @@ public class Catalogue extends javax.swing.JFrame {
                             .addComponent(BTN_Retirer, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BTN_ModPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BTN_ModQte, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(CB_Genre, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(CB_Genre, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TB_Type, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BTN_Filtrer)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 694, Short.MAX_VALUE)
                         .addComponent(BTN_Fermer)))
@@ -129,8 +309,11 @@ public class Catalogue extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(CB_Genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CB_Genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TB_Type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BTN_Filtrer))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -145,7 +328,7 @@ public class Catalogue extends javax.swing.JFrame {
                         .addComponent(BTN_Retirer)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(BTN_Fermer))
-                    .addComponent(SP_Catalogue, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
+                    .addComponent(SP_Catalogue, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -155,6 +338,10 @@ public class Catalogue extends javax.swing.JFrame {
     private void BTN_FermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FermerActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BTN_FermerActionPerformed
+
+    private void BTN_FiltrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FiltrerActionPerformed
+        RemplirList();
+    }//GEN-LAST:event_BTN_FiltrerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,6 +381,7 @@ public class Catalogue extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Ajouter;
     private javax.swing.JButton BTN_Fermer;
+    private javax.swing.JButton BTN_Filtrer;
     private javax.swing.JButton BTN_Mod;
     private javax.swing.JButton BTN_ModPrix;
     private javax.swing.JButton BTN_ModQte;
@@ -204,6 +392,7 @@ public class Catalogue extends javax.swing.JFrame {
     private javax.swing.JMenu Menu_Item;
     private javax.swing.JMenu Menu_Joueur;
     private javax.swing.JScrollPane SP_Catalogue;
+    private javax.swing.JTextField TB_Type;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }
