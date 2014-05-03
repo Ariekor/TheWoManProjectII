@@ -137,6 +137,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="AJOUTER"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_AjouterActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_ModPrix">
       <Properties>
