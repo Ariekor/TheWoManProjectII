@@ -12,6 +12,8 @@ package eshoppe;
  */
 public class GestionJoueurs extends javax.swing.JDialog {
 
+    ConnectionOracle connBD;
+    
     /**
      * Creates new form GestionArmes
      */
@@ -243,6 +245,11 @@ public class GestionJoueurs extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_BTN_LastActionPerformed
 
+    public void setParam(int numitem, ConnectionOracle conn)
+    {
+        this.connBD = conn;
+    }
+    
     /**
      * @param args the command line arguments
      */
