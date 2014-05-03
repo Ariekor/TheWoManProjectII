@@ -356,7 +356,7 @@ public class Catalogue extends javax.swing.JFrame {
         String genreSelectionner = CB_Genre.toString();
         if (genreSelectionner.equalsIgnoreCase("Arme"))
         {
-            
+            AjouterArme();
         }
         else if (genreSelectionner.equalsIgnoreCase("potion"))
         {
@@ -374,7 +374,7 @@ public class Catalogue extends javax.swing.JFrame {
     
     private void AjouterArme()
     {
-        GestionArmes Dialog = new GestionArmes(this, true,-1);
+        GestionArmes Dialog = new GestionArmes(this, true);
     }
     
     
