@@ -63,7 +63,7 @@ public class GestionArmes extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         TBX_Composition = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        CBX_Genre1 = new javax.swing.JComboBox();
+        CBX_Mains = new javax.swing.JComboBox();
         jSeparator1 = new javax.swing.JSeparator();
         CBX_Dispo = new javax.swing.JComboBox();
 
@@ -81,6 +81,11 @@ public class GestionArmes extends javax.swing.JDialog {
         jLabel3.setText("# item");
 
         BTN_Cancel.setText("ANNULER");
+        BTN_Cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_CancelActionPerformed(evt);
+            }
+        });
 
         BTN_OK.setText("OK");
         BTN_OK.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +112,7 @@ public class GestionArmes extends javax.swing.JDialog {
 
         jLabel10.setText("Mains");
 
-        CBX_Genre1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CBX_Mains.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         CBX_Dispo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -130,7 +135,7 @@ public class GestionArmes extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(CBX_Genre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(CBX_Mains, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(TBX_Composition, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(65, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
@@ -228,7 +233,7 @@ public class GestionArmes extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(CBX_Genre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CBX_Mains, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(44, Short.MAX_VALUE))))
         );
 
@@ -236,8 +241,13 @@ public class GestionArmes extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
-        // TODO add your handling code here:
+        ajouterItem();
+        ajouterArme();
     }//GEN-LAST:event_BTN_OKActionPerformed
+
+    private void BTN_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CancelActionPerformed
+        CloseForm();
+    }//GEN-LAST:event_BTN_CancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,7 +322,70 @@ public class GestionArmes extends javax.swing.JDialog {
          TBX_Recherche.setText("");
      }
     */
-    
+    private void ajouterItem()
+    {
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.insertion(?,?,?,?,?,?,?)}");
+            //nom, qte, prix,genre,dispo, poids, image
+            cstmS.setString(1,TBX_nom.getText());
+            cstmS.setInt(2, Integer.parseInt(TBX_Stock.getText()));
+            cstmS.setInt(3, Integer.parseInt(TBX_Prix.getText()));
+            cstmS.setString(4, CBX_Genre.getSelectedItem().toString());//getItemAt(CBX_Genre.getSelectedIndex())
+            cstmS.setInt(5, CBX_Dispo.getSelectedIndex());
+            cstmS.setInt(6, Integer.parseInt(TBX_Poids.getText()));
+       //    cstmS.setString(7, TBX_Image.getText());
+            cstmS.executeUpdate();
+       //     ListChamps();
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+    }
+    private int trouverNumItem(String nom, int qte, int prix, String genre, int dispo, int poids, String image)
+    {
+        int numitem = -1;
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.chercherItem(?,?,?,?,?,?,?)}");
+            //nom, qte, prix,genre,dispo, poids, image
+            cstmS.setString(1,TBX_nom.getText());
+            cstmS.setInt(2, Integer.parseInt(TBX_Stock.getText()));
+            cstmS.setInt(3, Integer.parseInt(TBX_Prix.getText()));
+            cstmS.setString(4, CBX_Genre.getSelectedItem().toString());//getItemAt(CBX_Genre.getSelectedIndex())
+            cstmS.setInt(5, CBX_Dispo.getSelectedIndex());
+            cstmS.setInt(6, Integer.parseInt(TBX_Poids.getText()));
+       //    cstmS.setString(7, TBX_Image.getText());
+            rst = cstmS.executeQuery();
+       //     ListChamps();
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+        try
+        {
+            Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rst = stm1.executeQuery(SQLGenre);
+            CBX_Genre.removeAllItems();
+            if(  rst.next())
+            {
+                numitem = (Integer)(rst.getInt("numitem"));
+            }
+                     
+        }
+        catch(SQLException e) {}
+        
+        
+        return numitem;
+    }
+    private void ajouterArme()
+    {
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.insertArme(?,?,?)}");            
+            cstmS.setInt(1, Integer.parseInt(TBX_Efficacite.getText()));
+            cstmS.setString(2, TBX_Composition.getText());
+            cstmS.setInt(3, Integer.parseInt(CBX_Mains.getSelectedItem().toString()));           
+            cstmS.executeUpdate();       
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+    }
     
     private void TakeItemCBX(javax.swing.JComboBox C , String NomItem)
     {
@@ -333,15 +406,18 @@ public class GestionArmes extends javax.swing.JDialog {
             Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rst = stm1.executeQuery(SQLGenre);
             CBX_Genre.removeAllItems();
-            CBX_Genre1.removeAllItems();
             while ( rst.next())
             {
-                CBX_Genre.addItem(rst.getString("genre"));
-                CBX_Genre1.addItem(rst.getString("genre"));
+                CBX_Genre.addItem(rst.getString("genre"));                
                 i ++;
             }
         }
         catch(SQLException e) {}
+    }
+    private void CloseForm()
+    {
+        setVisible(false);
+        dispose();
     }
 
    ConnectionOracle connBD;
@@ -369,7 +445,7 @@ public class GestionArmes extends javax.swing.JDialog {
     private javax.swing.JButton BTN_OK;
     private javax.swing.JComboBox CBX_Dispo;
     private javax.swing.JComboBox CBX_Genre;
-    private javax.swing.JComboBox CBX_Genre1;
+    private javax.swing.JComboBox CBX_Mains;
     private javax.swing.JLabel LBL_AjoutOuModif;
     private javax.swing.JLabel LBL_Key;
     private javax.swing.JTextField TBX_Composition;

@@ -16,13 +16,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.ListSelectionModel;
 
 /**
  *
  * @author Simon
  */
 public class Catalogue extends javax.swing.JFrame {
-// <editor-fold defaultstate="collapsed" desc="Attributs">
+    // <editor-fold defaultstate="collapsed" desc="Attributs">
     private ConnectionOracle conn = new ConnectionOracle();
     private String SQLGenre = "Select Distinct Genre From Catalogue";
     private String SQLCatalogue = "Select * from vuearmes ";
@@ -48,16 +49,16 @@ public class Catalogue extends javax.swing.JFrame {
     Vector Entete;
     JTable ZeCatalogue;
     // </editor-fold>
+    
     public Catalogue() {
         initComponents();
         conn.setConnection("kellylea", "oracle2");
         conn.connecter();
         ListCBX();
         RemplirList();
-        
     }
     
- // <editor-fold defaultstate="collapsed" desc="Remplir catalogue">   
+    // <editor-fold defaultstate="collapsed" desc="Remplir catalogue">   
     private void RemplirList()
     {
         if (CB_Genre.getSelectedItem().toString().equalsIgnoreCase("Arme") )
@@ -76,6 +77,7 @@ public class Catalogue extends javax.swing.JFrame {
         {
             RemplirListPotion();
         }
+        ZeCatalogue.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
     private void RemplirListArme()
@@ -378,12 +380,14 @@ public class Catalogue extends javax.swing.JFrame {
         {
             AjouterArmure();
         }
+        RemplirList();
     }
       
     private void AjouterArme()
     {
         Numint= -1;
         GestionArmes Dialog = new GestionArmes(this, true);
+        Dialog.setParam(Numint, conn);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
@@ -391,6 +395,7 @@ public class Catalogue extends javax.swing.JFrame {
     {
         Numint= -1;
         GestionArmures Dialog = new GestionArmures(this, true);
+        Dialog.setParam(Numint, conn);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
@@ -398,6 +403,7 @@ public class Catalogue extends javax.swing.JFrame {
     {
         Numint= -1;
         GestionHabilites Dialog = new GestionHabilites(this, true);
+        Dialog.setParam(Numint, conn);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
@@ -405,15 +411,27 @@ public class Catalogue extends javax.swing.JFrame {
     {
         Numint= -1;
         GestionPotions Dialog = new GestionPotions(this, true);
+        Dialog.setParam(Numint, conn);
         Dialog.setLocationRelativeTo(this);
         Dialog.setVisible(true);
     }
     
      // </editor-fold>
     
-    private void ModifierPrix()
+    private void AppelerModifierPrix()
     {
-        
+        if (ZeCatalogue.getSelectedColumnCount() != 0)
+        {
+            Numint = ObtenirNumSelectedItem();
+            ModifierPrix dialog = new ModifierPrix(this, true);
+            dialog.setParam(Numint, conn);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true); 
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Veuillez sélectionner une ligne !" );
+        }
     }
     
     private int ObtenirNumSelectedItem ()
@@ -421,6 +439,88 @@ public class Catalogue extends javax.swing.JFrame {
         int retour = Integer.parseInt(ZeCatalogue.getValueAt(ZeCatalogue.getSelectedRow(), 0).toString());
         return retour;
     }
+    
+    private void AppelerModifierQte()
+    {
+        if (ZeCatalogue.getSelectedColumnCount() != 0)
+        {
+            Numint = ObtenirNumSelectedItem();
+            ModifierQte dialog = new ModifierQte(this, true);
+            dialog.setParam(Numint, conn);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true); 
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Veuillez sélectionner une ligne !" );
+        }
+    }
+    
+   // <editor-fold defaultstate="collapsed" desc="Modification"> 
+    
+    private void ModifierSelection()
+    {
+        if (ZeCatalogue.getSelectedColumnCount() != 0)
+        {
+            String genreSelectionner = CB_Genre.getSelectedItem().toString();
+            if (genreSelectionner.equalsIgnoreCase("Arme"))
+            {
+                ModifierArme();
+            }
+            else if (genreSelectionner.equalsIgnoreCase("potion"))
+            {
+                ModifierPotion();
+            }
+            else if( genreSelectionner.equalsIgnoreCase("Habileté"))
+            {
+                ModifierHabilete();
+            }
+            else if( genreSelectionner.equalsIgnoreCase("Armure"))
+            {
+                ModifierArmure();
+            }
+            RemplirList();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Veuillez sélectionner une ligne !" );
+        }
+    }
+    
+    private void ModifierArme()
+    {
+        Numint= ObtenirNumSelectedItem();
+        GestionArmes Dialog = new GestionArmes(this, true);
+        Dialog.setParam(Numint, conn);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
+    }
+    private void ModifierArmure()
+    {
+        Numint= ObtenirNumSelectedItem();
+        GestionArmures Dialog = new GestionArmures(this, true);
+        Dialog.setParam(Numint, conn);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
+    }
+    private void ModifierPotion()
+    {
+        Numint= ObtenirNumSelectedItem();
+        GestionHabilites Dialog = new GestionHabilites(this, true);
+        Dialog.setParam(Numint, conn);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
+    }
+    private void ModifierHabilete()
+    {
+        Numint= ObtenirNumSelectedItem();
+        GestionPotions Dialog = new GestionPotions(this, true);
+        Dialog.setParam(Numint, conn);
+        Dialog.setLocationRelativeTo(this);
+        Dialog.setVisible(true);
+    }
+    
+    // </editor-fold>
     
 
     /**
@@ -468,8 +568,18 @@ public class Catalogue extends javax.swing.JFrame {
         });
 
         BTN_ModQte.setText("MODIFIER QTÉ");
+        BTN_ModQte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ModQteActionPerformed(evt);
+            }
+        });
 
         BTN_Mod.setText("MODIFIER");
+        BTN_Mod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ModActionPerformed(evt);
+            }
+        });
 
         BTN_Retirer.setText("RETIRER");
 
@@ -586,8 +696,16 @@ public class Catalogue extends javax.swing.JFrame {
     }//GEN-LAST:event_MI_AjouteritemActionPerformed
 
     private void BTN_ModPrixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModPrixActionPerformed
-        ModifierPrix();
+        AppelerModifierPrix();
     }//GEN-LAST:event_BTN_ModPrixActionPerformed
+
+    private void BTN_ModQteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModQteActionPerformed
+        AppelerModifierQte();
+    }//GEN-LAST:event_BTN_ModQteActionPerformed
+
+    private void BTN_ModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModActionPerformed
+        ModifierSelection();
+    }//GEN-LAST:event_BTN_ModActionPerformed
 
     /**
      * @param args the command line arguments
