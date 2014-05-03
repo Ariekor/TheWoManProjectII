@@ -55,33 +55,27 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="SP_Catalogue" pref="635" max="32767" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="2" attributes="0">
-                              <Component id="BTN_Mod" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
-                              <Component id="BTN_Retirer" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
-                              <Component id="BTN_ModPrix" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
-                              <Component id="BTN_ModQte" alignment="2" min="-2" pref="122" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="BTN_Ajouter" alignment="0" min="-2" pref="122" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
                   <Group type="102" attributes="0">
                       <Component id="CB_Genre" min="-2" pref="125" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="TB_Type" min="-2" pref="120" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="BTN_Filtrer" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="694" max="32767" attributes="0"/>
-                      <Component id="BTN_Fermer" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="SP_Catalogue" pref="862" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="BTN_Ajouter" linkSize="1" alignment="1" max="32767" attributes="0"/>
+                          <Component id="BTN_ModPrix" linkSize="1" alignment="1" max="32767" attributes="0"/>
+                          <Component id="BTN_ModQte" linkSize="1" alignment="1" max="32767" attributes="0"/>
+                          <Component id="BTN_Mod" linkSize="1" alignment="1" max="32767" attributes="0"/>
+                          <Component id="BTN_Retirer" linkSize="1" alignment="1" max="32767" attributes="0"/>
+                          <Component id="BTN_Fermer" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -97,25 +91,27 @@
                   <Component id="TB_Type" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="BTN_Filtrer" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                      <Component id="BTN_Ajouter" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Component id="BTN_Ajouter" linkSize="2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="BTN_ModPrix" min="-2" max="-2" attributes="0"/>
+                      <Component id="BTN_ModPrix" linkSize="2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="BTN_ModQte" min="-2" max="-2" attributes="0"/>
+                      <Component id="BTN_ModQte" linkSize="2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="BTN_Mod" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="BTN_Retirer" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="BTN_Mod" linkSize="2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="BTN_Retirer" linkSize="2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="273" max="32767" attributes="0"/>
                       <Component id="BTN_Fermer" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="SP_Catalogue" pref="354" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="SP_Catalogue" max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
