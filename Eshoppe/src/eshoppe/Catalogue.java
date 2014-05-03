@@ -63,7 +63,16 @@ public class Catalogue extends javax.swing.JFrame {
         {
             RemplirListArmure();
         }
+        else if (CB_Genre.getSelectedItem().toString().equalsIgnoreCase("Habileté"))
+        {
+            RemplirListHabilete();
+        }
+        else if ( CB_Genre.getSelectedItem().toString().equalsIgnoreCase("Potion"))
+        {
+            RemplirListPotion();
+        }
     }
+    
     private void RemplirListArme()
     {
         try
@@ -82,6 +91,26 @@ public class Catalogue extends javax.swing.JFrame {
         catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
         
     }
+    
+     private void RemplirListPotion()
+    {
+        try
+        {
+            PreparedStatement stm = conn.getConnection().prepareStatement(sqlPotion, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stm.setString(1, TB_Type.getText() + "%");
+            rst = stm.executeQuery();
+            Contenu = remplirVecteurPotion(rst);
+            Entete = creerEntetePotion();
+            ZeCatalogue = new JTable(Contenu,Entete);
+            SP_Catalogue.setViewportView(ZeCatalogue);
+            this.getContentPane().add(SP_Catalogue,BorderLayout.CENTER);
+            SP_Catalogue.validate();
+            
+        }
+        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
+        
+    }
+     
     private void RemplirListArmure()
     {
         try
@@ -91,6 +120,25 @@ public class Catalogue extends javax.swing.JFrame {
             rst = stm.executeQuery();
             Contenu = remplirVecteurArmure(rst);
             Entete = creerEnteteArmure();
+            ZeCatalogue = new JTable(Contenu,Entete);
+            SP_Catalogue.setViewportView(ZeCatalogue);
+            this.getContentPane().add(SP_Catalogue,BorderLayout.CENTER);
+            SP_Catalogue.validate();
+            
+        }
+        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
+        
+    }
+    
+    private void RemplirListHabilete()
+    {
+        try
+        {
+            PreparedStatement stm = conn.getConnection().prepareStatement(sqlHabilite, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stm.setString(1, TB_Type.getText() + "%");
+            rst = stm.executeQuery();
+            Contenu = remplirVecteurHabilete(rst);
+            Entete = creerEnteteHabilete();
             ZeCatalogue = new JTable(Contenu,Entete);
             SP_Catalogue.setViewportView(ZeCatalogue);
             this.getContentPane().add(SP_Catalogue,BorderLayout.CENTER);
@@ -118,6 +166,38 @@ public class Catalogue extends javax.swing.JFrame {
         return vectEntete;        
     }
     
+    private Vector creerEntetePotion()
+    {
+        Vector vectEntete = new Vector();
+        vectEntete.add("NumItem"); //1
+        vectEntete.add("NomItem"); //2
+        vectEntete.add("Prix");     //3
+        vectEntete.add("Quantite"); //4
+        vectEntete.add("Genre");    //5
+        vectEntete.add("Disponible");//6
+        vectEntete.add("Poids");     //7
+        vectEntete.add("Image");        //8
+        vectEntete.add("Effet Attendu");   //9
+        vectEntete.add("Durée éffet");  //10
+
+        return vectEntete;        
+    }
+    
+    private Vector creerEnteteHabilete()
+    {
+        Vector vectEntete = new Vector();
+        vectEntete.add("NumItem"); //1
+        vectEntete.add("NomItem"); //2
+        vectEntete.add("Prix");     //3
+        vectEntete.add("Quantite"); //4
+        vectEntete.add("Genre");    //5
+        vectEntete.add("Disponible");//6
+        vectEntete.add("Poids");     //7
+        vectEntete.add("Image");        //8
+        vectEntete.add("Desrcitpion");   //9
+
+        return vectEntete;        
+    }
     
     private Vector creerEnteteArmure()
     {
@@ -132,8 +212,38 @@ public class Catalogue extends javax.swing.JFrame {
         vectEntete.add("Image");        //8
         vectEntete.add("Efficacité");   //9
         vectEntete.add("Composition");  //10
-        vectEntete.add("taille");     //11
+        vectEntete.add("Taille");     //11
+
         return vectEntete;        
+    }
+    
+
+    
+    private Vector remplirVecteurHabilete(ResultSet rst){
+        Vector v = new Vector();
+        Vector ligne = null;
+        try
+        {            
+            while (rst.next()){
+                ligne = new Vector();
+                ligne.add(rst.getInt(1));
+                ligne.add(rst.getString(2));
+                ligne.add(rst.getInt(3));
+                ligne.add(rst.getInt(4));
+                ligne.add(rst.getString(5));
+                ligne.add(rst.getInt(6));
+                ligne.add(rst.getInt(7));
+                ligne.add(rst.getString(8));
+                ligne.add(rst.getString(9));
+                
+                v.add(ligne); 
+            }            
+        }
+        catch (SQLException se)
+        {
+            JOptionPane.showMessageDialog(this, se);
+        }
+        return v;
     }
     
     private Vector remplirVecteurArmure(ResultSet rst){
@@ -163,6 +273,35 @@ public class Catalogue extends javax.swing.JFrame {
         }
         return v;
     }
+    
+    private Vector remplirVecteurPotion(ResultSet rst){
+        Vector v = new Vector();
+        Vector ligne = null;
+        try
+        {            
+            while (rst.next()){
+                ligne = new Vector();
+                ligne.add(rst.getInt(1));
+                ligne.add(rst.getString(2));
+                ligne.add(rst.getInt(3));
+                ligne.add(rst.getInt(4));
+                ligne.add(rst.getString(5));
+                ligne.add(rst.getInt(6));
+                ligne.add(rst.getInt(7));
+                ligne.add(rst.getString(8));
+                ligne.add(rst.getString(9));
+                ligne.add(rst.getInt(10));
+
+                v.add(ligne); 
+            }            
+        }
+        catch (SQLException se)
+        {
+            JOptionPane.showMessageDialog(this, se);
+        }
+        return v;
+    }
+    
     private Vector remplirVecteurArme(ResultSet rst){
         Vector v = new Vector();
         Vector ligne = null;
@@ -206,6 +345,38 @@ public class Catalogue extends javax.swing.JFrame {
         catch (SQLException e){}
     }
     
+    private void CloseForm()
+    {
+        setVisible(false);
+        dispose();
+    }
+    
+    private void Ajouter()
+    {
+        String genreSelectionner = CB_Genre.toString();
+        if (genreSelectionner.equalsIgnoreCase("Arme"))
+        {
+            
+        }
+        else if (genreSelectionner.equalsIgnoreCase("potion"))
+        {
+
+        }
+        else if( genreSelectionner.equalsIgnoreCase("Habileté"))
+        {
+            
+        }
+        else if( genreSelectionner.equalsIgnoreCase("Armure"))
+        {
+            
+        }
+    }
+    
+    private void AjouterArme()
+    {
+        GestionArmes Dialog = new GestionArmes(this, true,-1);
+    }
+    
     
 
     /**
@@ -239,6 +410,11 @@ public class Catalogue extends javax.swing.JFrame {
         CB_Genre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         BTN_Ajouter.setText("AJOUTER");
+        BTN_Ajouter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_AjouterActionPerformed(evt);
+            }
+        });
 
         BTN_ModPrix.setText("MODIFIER PRIX");
 
@@ -340,12 +516,16 @@ public class Catalogue extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_FermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FermerActionPerformed
-        // TODO add your handling code here:
+        CloseForm();
     }//GEN-LAST:event_BTN_FermerActionPerformed
 
     private void BTN_FiltrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FiltrerActionPerformed
         RemplirList();
     }//GEN-LAST:event_BTN_FiltrerActionPerformed
+
+    private void BTN_AjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AjouterActionPerformed
+       Ajouter();
+    }//GEN-LAST:event_BTN_AjouterActionPerformed
 
     /**
      * @param args the command line arguments
