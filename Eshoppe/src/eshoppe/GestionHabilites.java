@@ -15,6 +15,14 @@ public class GestionHabilites extends javax.swing.JDialog {
     /**
      * Creates new form GestionArmes
      */
+    private int numitem;
+    private ConnectionOracle connBD;
+    
+    public void setParam(int numitem, ConnectionOracle conn)
+    {
+        this.numitem = numitem;
+        this.connBD = conn;
+    }
     public GestionHabilites(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
