@@ -161,8 +161,8 @@ public class Catalogue extends javax.swing.JFrame {
         Vector vectEntete = new Vector();
         vectEntete.add("NumItem"); //1
         vectEntete.add("NomItem"); //2
-        vectEntete.add("Prix");     //3
-        vectEntete.add("Quantite"); //4
+        vectEntete.add("Quantite");     //3
+        vectEntete.add("Prix"); //4
         vectEntete.add("Genre");    //5
         vectEntete.add("Disponible");//6
         vectEntete.add("Poids");     //7
@@ -178,8 +178,8 @@ public class Catalogue extends javax.swing.JFrame {
         Vector vectEntete = new Vector();
         vectEntete.add("NumItem"); //1
         vectEntete.add("NomItem"); //2
-        vectEntete.add("Prix");     //3
-        vectEntete.add("Quantite"); //4
+        vectEntete.add("Quantite");     //3
+        vectEntete.add("Prix"); //4
         vectEntete.add("Genre");    //5
         vectEntete.add("Disponible");//6
         vectEntete.add("Poids");     //7
@@ -195,8 +195,8 @@ public class Catalogue extends javax.swing.JFrame {
         Vector vectEntete = new Vector();
         vectEntete.add("NumItem"); //1
         vectEntete.add("NomItem"); //2
-        vectEntete.add("Prix");     //3
-        vectEntete.add("Quantite"); //4
+        vectEntete.add("Quantite");     //3
+        vectEntete.add("Prix"); //4
         vectEntete.add("Genre");    //5
         vectEntete.add("Disponible");//6
         vectEntete.add("Poids");     //7
@@ -211,8 +211,8 @@ public class Catalogue extends javax.swing.JFrame {
         Vector vectEntete = new Vector();
         vectEntete.add("NumItem"); //1
         vectEntete.add("NomItem"); //2
-        vectEntete.add("Prix");     //3
-        vectEntete.add("Quantite"); //4
+        vectEntete.add("Quantite");     //3
+        vectEntete.add("Prix"); //4
         vectEntete.add("Genre");    //5
         vectEntete.add("Disponible");//6
         vectEntete.add("Poids");     //7
@@ -424,9 +424,10 @@ public class Catalogue extends javax.swing.JFrame {
         {
             Numint = ObtenirNumSelectedItem();
             ModifierPrix dialog = new ModifierPrix(this, true);
-            dialog.setParam(Numint, conn);
+            dialog.setParam(Numint, conn,ObtenirPrixSelection() );
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true); 
+            RemplirList();
         }
         else
         {
@@ -434,10 +435,20 @@ public class Catalogue extends javax.swing.JFrame {
         }
     }
     
+    private int ObtenirPrixSelection()
+    {
+        return Integer.parseInt(ZeCatalogue.getValueAt(ZeCatalogue.getSelectedRow(), 3).toString());
+    }        
+       
+    
     private int ObtenirNumSelectedItem ()
     {
         int retour = Integer.parseInt(ZeCatalogue.getValueAt(ZeCatalogue.getSelectedRow(), 0).toString());
         return retour;
+    }
+    private int ObtenirQTESelection()
+    {
+        return Integer.parseInt(ZeCatalogue.getValueAt(ZeCatalogue.getSelectedRow(), 2).toString());
     }
     
     private void AppelerModifierQte()
@@ -446,9 +457,10 @@ public class Catalogue extends javax.swing.JFrame {
         {
             Numint = ObtenirNumSelectedItem();
             ModifierQte dialog = new ModifierQte(this, true);
-            dialog.setParam(Numint, conn);
+            dialog.setParam(Numint, conn,ObtenirQTESelection());
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true); 
+            RemplirList();
         }
         else
         {
