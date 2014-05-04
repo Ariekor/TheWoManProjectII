@@ -6,6 +6,10 @@
 
 package eshoppe;
 
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Isabelle
@@ -18,16 +22,50 @@ public class ModifierPrix extends javax.swing.JDialog {
     
     private int numitem;
     private ConnectionOracle connBD;
+    private int prix;
     
-    public void setParam(int numitem, ConnectionOracle conn)
+    public void setParam(int numitem, ConnectionOracle conn, int prix)
     {
         this.numitem = numitem;
         this.connBD = conn;
+        this.prix = prix;
+        FormLoad();
+    }
+    private void FormLoad()
+    {
+        TBX_new.setText(prix +"");
+    }
+    
+   private void CloseForm()
+    {
+        setVisible(false);
+        dispose();
     }
     
     public ModifierPrix(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    private void appliquerChangement()
+    {
+        int nouveauPrix = Integer.parseInt(TBX_new.getText());
+        if (nouveauPrix >= 0 )
+        {
+            try
+            {
+                CallableStatement cstm = connBD.getConnection().prepareCall("{call GESTION_CATALOGUE.MODIFIERPRIX( ? , ? )}");
+                cstm.setInt(1,numitem);
+                cstm.setInt(2, nouveauPrix);
+                cstm.executeUpdate();
+                CloseForm();
+            }
+            catch(SQLException e){JOptionPane.showMessageDialog(rootPane, e.getMessage());}
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(rootPane, "Impossible de mettre un prix négatif");
+        }
     }
 
     /**
@@ -125,11 +163,11 @@ public class ModifierPrix extends javax.swing.JDialog {
     }//GEN-LAST:event_TBX_newActionPerformed
 
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
-        // TODO add your handling code here:
+        appliquerChangement();
     }//GEN-LAST:event_BTN_OKActionPerformed
 
     private void BTN_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CancelActionPerformed
-        // TODO add your handling code here:
+        CloseForm();
     }//GEN-LAST:event_BTN_CancelActionPerformed
 
     /**
