@@ -642,6 +642,7 @@ public class Catalogue extends javax.swing.JFrame {
 
         jMenu1.setText("Ajouter");
 
+        Menu_Arme.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         Menu_Arme.setText("Arme");
         Menu_Arme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -650,6 +651,7 @@ public class Catalogue extends javax.swing.JFrame {
         });
         jMenu1.add(Menu_Arme);
 
+        Menu_Armure.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         Menu_Armure.setText("Armure");
         Menu_Armure.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -658,6 +660,7 @@ public class Catalogue extends javax.swing.JFrame {
         });
         jMenu1.add(Menu_Armure);
 
+        Menu_Habilete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         Menu_Habilete.setText("Habileté");
         Menu_Habilete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -666,6 +669,7 @@ public class Catalogue extends javax.swing.JFrame {
         });
         jMenu1.add(Menu_Habilete);
 
+        Menu_Potion.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         Menu_Potion.setText("Potion");
         Menu_Potion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
