@@ -6,6 +6,8 @@
 
 package eshoppe;
 
+import java.sql.*;
+import javax.swing.*;
 /**
  *
  * @author Isabelle
@@ -17,11 +19,16 @@ public class GestionArmures extends javax.swing.JDialog {
      */
     private int numitem;
     private ConnectionOracle connBD;
+    private String SQLGenre = "Select Distinct Genre From Catalogue";
+    private String SQLTaille = "Select Distinct Taille From Armures";
+    private ResultSet rst;
     
     public void setParam(int numitem, ConnectionOracle conn)
     {
         this.numitem = numitem;
         this.connBD = conn;
+        remplirCBX();
+        afficherTitre();
     }
     
     public GestionArmures(java.awt.Frame parent, boolean modal) {
@@ -85,6 +92,11 @@ public class GestionArmures extends javax.swing.JDialog {
         jLabel3.setText("# item");
 
         BTN_Cancel.setText("ANNULER");
+        BTN_Cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_CancelActionPerformed(evt);
+            }
+        });
 
         BTN_OK.setText("OK");
         BTN_OK.addActionListener(new java.awt.event.ActionListener() {
@@ -249,8 +261,22 @@ public class GestionArmures extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
-        // TODO add your handling code here:
+        if(numitem == -1)
+        {
+            ajouterItem();
+            ajouterArmure();
+            CloseForm();
+        }
+        else
+        {
+       //     modifierItem();
+            CloseForm();
+        }
     }//GEN-LAST:event_BTN_OKActionPerformed
+
+    private void BTN_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CancelActionPerformed
+        CloseForm();
+    }//GEN-LAST:event_BTN_CancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,6 +320,124 @@ public class GestionArmures extends javax.swing.JDialog {
         });
     }
 
+    private void ajouterItem()
+    {
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.insertion(?,?,?,?,?,?,?)}");
+            //nom, qte, prix,genre,dispo, poids, image
+            cstmS.setString(1,TBX_nom.getText());
+            cstmS.setInt(2, Integer.parseInt(TBX_Stock.getText()));
+            cstmS.setInt(3, Integer.parseInt(TBX_Prix.getText()));
+            cstmS.setString(4, CBX_Genre.getSelectedItem().toString());//getItemAt(CBX_Genre.getSelectedIndex())
+            cstmS.setInt(5, CBX_Dispo.getSelectedIndex());
+            cstmS.setInt(6, Integer.parseInt(TBX_Poids.getText()));
+            cstmS.setString(7, TBX_Image.getText());
+            cstmS.executeUpdate();
+       //     ListChamps();
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+    }
+    
+    private int trouverNumItem()
+    {
+        int num = 0;
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.chercherItem(?,?,?,?,?,?,?,?)}");
+            //nom, qte, prix,genre,dispo, poids, image
+            cstmS.registerOutParameter(1, java.sql.Types.INTEGER);///////out
+            cstmS.setString(2,TBX_nom.getText());
+            cstmS.setInt(3, Integer.parseInt(TBX_Stock.getText()));
+            cstmS.setInt(4, Integer.parseInt(TBX_Prix.getText()));
+            cstmS.setString(5, CBX_Genre.getSelectedItem().toString());//getItemAt(CBX_Genre.getSelectedIndex())
+            cstmS.setInt(6, CBX_Dispo.getSelectedIndex());
+            cstmS.setInt(7, Integer.parseInt(TBX_Poids.getText()));
+            cstmS.setString(8, TBX_Image.getText());
+            cstmS.execute();
+            
+            num = cstmS.getInt(1);
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+        
+        return num;
+    }
+    
+    private void ajouterArmure()
+    {
+        int num = trouverNumItem();        
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.ajouterArme(?,?,?,?)}");            
+            cstmS.setInt(1, num);
+            cstmS.setInt(2, Integer.parseInt(TBX_Efficacite.getText()));
+            cstmS.setString(3, TBX_Composition.getText());
+            cstmS.setString(4, CBX_Taille.getSelectedItem().toString()); 
+            cstmS.executeUpdate();       
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+    }
+    
+    private void remplirCBX()
+    {
+        CBX_Dispo.removeAllItems();        
+        CBX_Dispo.addItem("0");
+        CBX_Dispo.addItem("1");        
+        ListGenre();
+        ListTaille();
+    }
+    
+    private void ListTaille()
+    {
+        int i = 0;
+        try
+        {
+            Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rst = stm1.executeQuery(SQLTaille);
+            CBX_Taille.removeAllItems();
+            while ( rst.next())
+            {
+                CBX_Taille.addItem(rst.getString("taille"));                
+                i ++;
+            }
+        }
+        catch(SQLException e) {}
+    }
+    private void ListGenre()
+    {
+        int i = 0;
+        try
+        {
+            Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rst = stm1.executeQuery(SQLGenre);
+            CBX_Genre.removeAllItems();
+            while ( rst.next())
+            {
+                CBX_Genre.addItem(rst.getString("genre"));                
+                i ++;
+            }
+        }
+        catch(SQLException e) {}
+    }
+    
+    private void CloseForm()
+    {
+        setVisible(false);
+        dispose();
+    }
+    
+    private void afficherTitre()
+    {
+        if (numitem == -1)
+        {
+            LBL_AjoutOuModif.setText("Ajouter Armure");
+        }
+        else
+        {
+            LBL_AjoutOuModif.setText("Modifier Armure");
+        }        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Cancel;
     private javax.swing.JButton BTN_OK;

@@ -353,14 +353,6 @@ public class GestionArmes extends javax.swing.JDialog {
             cstmS.execute();
             
             num = cstmS.getInt(1);
-            /*
-            ///récupéré le pnum du out
-            rst = cstmS.executeQuery();///
-            if(  rst.next())
-            {
-                num = (Integer)(rst.getInt("numitem"));
-            }*/
-            
         }catch(SQLException sqe){
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
@@ -380,17 +372,6 @@ public class GestionArmes extends javax.swing.JDialog {
             cstmS.executeUpdate();       
         }catch(SQLException sqe){
             JOptionPane.showMessageDialog(this, sqe.getMessage());
-        }
-    }
-    
-    private void TakeItemCBX(javax.swing.JComboBox C , String NomItem)
-    {
-        for(int i = 0; i < C.getItemCount(); i++)
-        {
-            if (NomItem.equals(C.getItemAt(i).toString()) )
-            {
-                C.setSelectedIndex(i);
-            }
         }
     }
     
@@ -440,26 +421,10 @@ public class GestionArmes extends javax.swing.JDialog {
         }        
     }
 
-   ConnectionOracle connBD;
-   ResultSet rst ;
-   int  numitem;
+   private ConnectionOracle connBD;
+   private ResultSet rst ;
+   private int  numitem;
    private String SQLGenre = "Select Distinct Genre From Catalogue";
- /*  private String sqlArme = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, efficacité, composition, mains\n" +
-                             "FROM catalogue ca\n" +
-                             "INNER JOIN armes ar ON ca.numitem = ar.numitem  where nomitem like ? \n" +
-                             "ORDER BY numitem ";
-   private String sqlArmure = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, efficacité, composition, taille\n" +
-                               "FROM catalogue ca\n" +
-                               "INNER JOIN armures ar ON ca.numitem = ar.numitem where nomitem like ? \n" +
-                               "ORDER BY numitem ";
-   private String sqlPotion = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, effetattendu, duréeeffet\n" +
-                               "FROM catalogue ca\n" +
-                               "INNER JOIN potions po ON ca.numitem = po.numitem where nomitem like ? \n" +
-                               "ORDER BY numitem ";
-   private String sqlHabilite = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, description\n" +
-                                 "FROM catalogue ca\n" +
-                                 "INNER JOIN habiletés ha ON ca.numitem = ha.numitem where nomitem like ? \n" +
-                                 "ORDER BY numitem ";*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Cancel;
     private javax.swing.JButton BTN_OK;
