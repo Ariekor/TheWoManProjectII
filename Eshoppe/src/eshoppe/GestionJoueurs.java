@@ -6,13 +6,19 @@
 
 package eshoppe;
 
+import java.sql.*;
+import java.awt.*;
+import javax.swing.*;
+
 /**
  *
  * @author Isabelle
  */
 public class GestionJoueurs extends javax.swing.JDialog {
 
+    String sql1 = "SELECT NOMUSAGER, MOTDEPASSE, NOM, PRENOM, CAPITAL FROM JOUEURSRPG";
     ConnectionOracle connBD;
+    ResultSet rstUsers;
     
     /**
      * Creates new form GestionArmes
@@ -55,6 +61,7 @@ public class GestionJoueurs extends javax.swing.JDialog {
         BTN_Previous = new javax.swing.JButton();
         BTN_Next = new javax.swing.JButton();
         BTN_Last = new javax.swing.JButton();
+        BN_Rechercher = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion Joueurs");
@@ -140,6 +147,13 @@ public class GestionJoueurs extends javax.swing.JDialog {
             }
         });
 
+        BN_Rechercher.setText("RECHERCHER");
+        BN_Rechercher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BN_RechercherActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,7 +187,10 @@ public class GestionJoueurs extends javax.swing.JDialog {
                             .addComponent(BTN_Next)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(BTN_Last)))
-                    .addComponent(TBX_User1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(TBX_User1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BN_Rechercher)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -188,7 +205,9 @@ public class GestionJoueurs extends javax.swing.JDialog {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TBX_User1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TBX_User1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BN_Rechercher))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -226,28 +245,137 @@ public class GestionJoueurs extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_FermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FermerActionPerformed
-        // TODO add your handling code here:
+        CloseForm();
     }//GEN-LAST:event_BTN_FermerActionPerformed
 
     private void BTN_FirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FirstActionPerformed
-        // TODO add your handling code here:
+        try
+        {
+            if(rstUsers.first())
+            {
+                afficherUsers();
+            }
+        }
+        
+        catch(SQLException se){ System.out.println(se);}
     }//GEN-LAST:event_BTN_FirstActionPerformed
 
     private void BTN_PreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_PreviousActionPerformed
-        // TODO add your handling code here:
+        try 
+        {
+           if(rstUsers.previous())
+           {
+              afficherUsers();
+           }
+           else 
+           {
+             JOptionPane.showMessageDialog(this, "Précedent impossible");
+           }
+
+        }
+
+        catch(SQLException se)
+        {
+           JOptionPane.showMessageDialog(this, "Précedent impossible");
+        }
     }//GEN-LAST:event_BTN_PreviousActionPerformed
 
     private void BTN_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_NextActionPerformed
-        // TODO add your handling code here:
+        try 
+        {
+            if(rstUsers.next())
+            {
+                  afficherUsers();
+            }
+
+            else 
+            {
+               JOptionPane.showMessageDialog(this, "Suivant impossible");
+            }
+        }
+
+        catch(SQLException se)
+        {
+           JOptionPane.showMessageDialog(this, "Suivant imposible");
+        }
     }//GEN-LAST:event_BTN_NextActionPerformed
 
     private void BTN_LastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_LastActionPerformed
-        // TODO add your handling code here:
+       try 
+       {
+           if(rstUsers.last())
+           {
+                afficherUsers();
+           }
+       }
+
+       catch(SQLException se){
+          JOptionPane.showMessageDialog(this, "Dernier imposible");
+       }
     }//GEN-LAST:event_BTN_LastActionPerformed
+
+    private void BN_RechercherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BN_RechercherActionPerformed
+        RechercherUser();
+    }//GEN-LAST:event_BN_RechercherActionPerformed
 
     public void setParam(int numitem, ConnectionOracle conn)
     {
         this.connBD = conn;
+        formLoad();
+    }
+    
+    private void CloseForm()
+    {
+        setVisible(false);
+        dispose();
+    }
+    
+    private void RechercherUser()
+    {
+        try 
+        {
+            String sqlrech = "SELECT NOMUSAGER, MOTDEPASSE, NOM, PRENOM, CAPITAL FROM JOUEURSRPG WHERE NOMUSAGER LIKE ?";
+            PreparedStatement stmrech = connBD.getConnection().prepareStatement(sqlrech, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+            stmrech.setString(1, TBX_User1.getText() + "%");
+            rstUsers = stmrech.executeQuery();
+
+            if (rstUsers.first())
+            {
+                afficherUsers();
+            }
+        }
+        catch(SQLException se){ System.out.println(se);}
+    }
+    
+    public void afficherUsers()
+    {
+        try
+        {
+            LB_User.setText(rstUsers.getString("NOMUSAGER"));
+            LB_Nom.setText(rstUsers.getString("NOM"));
+            LB_Prenom.setText(rstUsers.getString("PRENOM"));
+            LB_User3.setText(rstUsers.getString("MOTDEPASSE"));
+            LB_Capital.setText (((Integer)rstUsers.getInt("CAPITAL")).toString());
+        }
+        
+        catch(SQLException se){ System.out.println(se);} 
+    }
+    
+    public void formLoad()
+    {
+        try
+        {
+            Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rstUsers = stm1.executeQuery(sql1);
+            
+            if (rstUsers.first())
+            {
+                afficherUsers();
+            }
+        }
+        
+        catch(SQLException se){ System.out.println(se);}
     }
     
     /**
@@ -293,6 +421,7 @@ public class GestionJoueurs extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BN_Rechercher;
     private javax.swing.JButton BTN_Fermer;
     private javax.swing.JButton BTN_First;
     private javax.swing.JButton BTN_Invetaire;
