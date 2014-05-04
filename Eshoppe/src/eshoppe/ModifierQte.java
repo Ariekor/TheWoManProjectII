@@ -6,6 +6,10 @@
 
 package eshoppe;
 
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Isabelle
@@ -17,17 +21,51 @@ public class ModifierQte extends javax.swing.JDialog {
      */
     
     private int numitem;
+    private int qte;
     private ConnectionOracle connBD;
     
-    public void setParam(int numitem, ConnectionOracle conn)
+    public void setParam(int numitem, ConnectionOracle conn, int qte)
     {
         this.numitem = numitem;
         this.connBD = conn;
+        this.qte = qte;
+        FormLoad();
+    }
+     private void FormLoad()
+    {
+        TBX_new.setText(qte +"");
+    }
+    
+   private void CloseForm()
+    {
+        setVisible(false);
+        dispose();
     }
     
     public ModifierQte(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    private void appliquerChangement()
+    {
+        int nouveauQte = Integer.parseInt(TBX_new.getText());
+        if (nouveauQte >= 0 )
+        {
+            try
+            {
+                CallableStatement cstm = connBD.getConnection().prepareCall("{call GESTION_CATALOGUE.MODIFIERQUANTITE( ? , ? )}");
+                cstm.setInt(1,numitem);
+                cstm.setInt(2, nouveauQte);
+                cstm.executeUpdate();
+                CloseForm();
+            }
+            catch(SQLException e){JOptionPane.showMessageDialog(rootPane, e.getMessage());}
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(rootPane, "Impossible de mettre une quantitée négatif");
+        }
     }
 
     /**
@@ -124,11 +162,11 @@ public class ModifierQte extends javax.swing.JDialog {
     }//GEN-LAST:event_TBX_newActionPerformed
 
     private void BTN_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CancelActionPerformed
-        // TODO add your handling code here:
+        CloseForm();
     }//GEN-LAST:event_BTN_CancelActionPerformed
 
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
-        // TODO add your handling code here:
+        appliquerChangement();
     }//GEN-LAST:event_BTN_OKActionPerformed
 
     /**
