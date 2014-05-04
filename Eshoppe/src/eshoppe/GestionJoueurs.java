@@ -16,7 +16,7 @@ import javax.swing.*;
  */
 public class GestionJoueurs extends javax.swing.JDialog {
 
-    String sql1 = "SELECT NOMUSAGER, MOTDEPASSE, NOM, PRENOM, CAPITAL FROM JOUEURSRPG";
+    String sql1 = "SELECT NOMUSAGER, MOTDEPASSE, NOM, PRENOM, CAPITAL FROM JOUEURSRPG order by nomusager";
     ConnectionOracle connBD;
     ResultSet rstUsers;
     

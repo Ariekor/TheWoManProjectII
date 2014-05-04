@@ -23,6 +23,7 @@ public class GestionArmures extends javax.swing.JDialog {
     private String SQLTaille = "Select Distinct Taille From Armures";
     private ResultSet rst;
     
+    //Méthode appellée par le catalogue et qui initialise le form et les attributs
     public void setParam(int numitem, ConnectionOracle conn)
     {
         this.numitem = numitem;
@@ -263,13 +264,13 @@ public class GestionArmures extends javax.swing.JDialog {
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
         if(numitem == -1)
         {
-            ajouterItem();
-            ajouterArmure();
+            ajouterItem();  //attributs communs à tous
+            ajouterArmure();//attributs spécifiques
             CloseForm();
         }
         else
         {
-       //     modifierItem();
+       //     modifierItem();  // a coder   le catalogue passe le numitiem a modifier dans setparam.
             CloseForm();
         }
     }//GEN-LAST:event_BTN_OKActionPerformed
@@ -319,50 +320,48 @@ public class GestionArmures extends javax.swing.JDialog {
             }
         });
     }
-
+    // Procédure générique pour tout genre d'items
     private void ajouterItem()
     {
         try{
             CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.insertion(?,?,?,?,?,?,?)}");
-            //nom, qte, prix,genre,dispo, poids, image
             cstmS.setString(1,TBX_nom.getText());
             cstmS.setInt(2, Integer.parseInt(TBX_Stock.getText()));
             cstmS.setInt(3, Integer.parseInt(TBX_Prix.getText()));
-            cstmS.setString(4, CBX_Genre.getSelectedItem().toString());//getItemAt(CBX_Genre.getSelectedIndex())
+            cstmS.setString(4, CBX_Genre.getSelectedItem().toString());
             cstmS.setInt(5, CBX_Dispo.getSelectedIndex());
             cstmS.setInt(6, Integer.parseInt(TBX_Poids.getText()));
             cstmS.setString(7, TBX_Image.getText());
             cstmS.executeUpdate();
-       //     ListChamps();
         }catch(SQLException sqe){
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
     }
-    
+    //Exécuté après ajouterItem() pour récupérer le numitem qui a été donné par le trigger.
+    //Le numitem sera utilisé pour l'insertion à la table genre.
     private int trouverNumItem()
     {
         int num = 0;
         try{
             CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.chercherItem(?,?,?,?,?,?,?,?)}");
-            //nom, qte, prix,genre,dispo, poids, image
-            cstmS.registerOutParameter(1, java.sql.Types.INTEGER);///////out
+            cstmS.registerOutParameter(1, java.sql.Types.INTEGER);
             cstmS.setString(2,TBX_nom.getText());
             cstmS.setInt(3, Integer.parseInt(TBX_Stock.getText()));
             cstmS.setInt(4, Integer.parseInt(TBX_Prix.getText()));
-            cstmS.setString(5, CBX_Genre.getSelectedItem().toString());//getItemAt(CBX_Genre.getSelectedIndex())
+            cstmS.setString(5, CBX_Genre.getSelectedItem().toString());
             cstmS.setInt(6, CBX_Dispo.getSelectedIndex());
             cstmS.setInt(7, Integer.parseInt(TBX_Poids.getText()));
             cstmS.setString(8, TBX_Image.getText());
             cstmS.execute();
             
-            num = cstmS.getInt(1);
+            num = cstmS.getInt(1);  // on récupère le numitem retourné en "out"
         }catch(SQLException sqe){
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
         
         return num;
     }
-    
+    //fait l'ajout à la table genre spécifique après avoir récupéré le numitem selon les parametres communs.
     private void ajouterArmure()
     {
         int num = trouverNumItem();        
@@ -377,16 +376,18 @@ public class GestionArmures extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
     }
-    
+    //rempli les trois menus déroulants.  Appelé par setParam à l'appel du form par catalogue.
     private void remplirCBX()
     {
-        CBX_Dispo.removeAllItems();        
+        CBX_Dispo.removeAllItems();   
+        // on aurait pu faire une méthode comme listGenre et listTaille pour Disponible
+        // mais les valeurs sont simples à ajouter "à la main".
         CBX_Dispo.addItem("0");
         CBX_Dispo.addItem("1");        
         ListGenre();
         ListTaille();
     }
-    
+    //Récupère les tailles de la BD pour remplir le menu déroulant
     private void ListTaille()
     {
         int i = 0;
@@ -403,6 +404,8 @@ public class GestionArmures extends javax.swing.JDialog {
         }
         catch(SQLException e) {}
     }
+    
+    //Récupère les genres de la BD pour remplir le menu déroulant
     private void ListGenre()
     {
         int i = 0;
@@ -419,13 +422,15 @@ public class GestionArmures extends javax.swing.JDialog {
         }
         catch(SQLException e) {}
     }
-    
+    //Le nom le dit...  Est appelé par les boutons OK et ANNULER.
     private void CloseForm()
     {
         setVisible(false);
         dispose();
     }
     
+    //Affiche le but de la fenêtre selon la façon que catalogue a appelé le form.
+    //Soit ajouter un nouvel item ou modifier un item existant (lorsque cette option sera disponible.
     private void afficherTitre()
     {
         if (numitem == -1)
