@@ -576,7 +576,11 @@ public class Catalogue extends javax.swing.JFrame {
         BTN_Filtrer = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         Menu_Item = new javax.swing.JMenu();
-        MI_Ajouteritem = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        Menu_Arme = new javax.swing.JMenuItem();
+        Menu_Armure = new javax.swing.JMenuItem();
+        Menu_Habilete = new javax.swing.JMenuItem();
+        Menu_Potion = new javax.swing.JMenuItem();
         Menu_Joueur = new javax.swing.JMenu();
         MI_ConsultJoueur = new javax.swing.JMenuItem();
 
@@ -636,13 +640,41 @@ public class Catalogue extends javax.swing.JFrame {
 
         Menu_Item.setText("Item");
 
-        MI_Ajouteritem.setText("Ajouter Item");
-        MI_Ajouteritem.addActionListener(new java.awt.event.ActionListener() {
+        jMenu1.setText("Ajouter");
+
+        Menu_Arme.setText("Arme");
+        Menu_Arme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MI_AjouteritemActionPerformed(evt);
+                Menu_ArmeActionPerformed(evt);
             }
         });
-        Menu_Item.add(MI_Ajouteritem);
+        jMenu1.add(Menu_Arme);
+
+        Menu_Armure.setText("Armure");
+        Menu_Armure.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_ArmureActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Menu_Armure);
+
+        Menu_Habilete.setText("Habileté");
+        Menu_Habilete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_HabileteActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Menu_Habilete);
+
+        Menu_Potion.setText("Potion");
+        Menu_Potion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_PotionActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Menu_Potion);
+
+        Menu_Item.add(jMenu1);
 
         jMenuBar1.add(Menu_Item);
 
@@ -733,10 +765,6 @@ public class Catalogue extends javax.swing.JFrame {
        Ajouter();
     }//GEN-LAST:event_BTN_AjouterActionPerformed
 
-    private void MI_AjouteritemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MI_AjouteritemActionPerformed
-        Ajouter();
-    }//GEN-LAST:event_MI_AjouteritemActionPerformed
-
     private void BTN_ModPrixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModPrixActionPerformed
         AppelerModifierPrix();
     }//GEN-LAST:event_BTN_ModPrixActionPerformed
@@ -756,6 +784,22 @@ public class Catalogue extends javax.swing.JFrame {
     private void MI_ConsultJoueurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MI_ConsultJoueurActionPerformed
         OuvrireJoueur();
     }//GEN-LAST:event_MI_ConsultJoueurActionPerformed
+
+    private void Menu_ArmeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_ArmeActionPerformed
+        AjouterArme();
+    }//GEN-LAST:event_Menu_ArmeActionPerformed
+
+    private void Menu_ArmureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_ArmureActionPerformed
+        AjouterArmure();
+    }//GEN-LAST:event_Menu_ArmureActionPerformed
+
+    private void Menu_HabileteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_HabileteActionPerformed
+        AjouterHabilete();
+    }//GEN-LAST:event_Menu_HabileteActionPerformed
+
+    private void Menu_PotionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_PotionActionPerformed
+        AjouterPotion();
+    }//GEN-LAST:event_Menu_PotionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -801,12 +845,16 @@ public class Catalogue extends javax.swing.JFrame {
     private javax.swing.JButton BTN_ModQte;
     private javax.swing.JButton BTN_Retirer;
     private javax.swing.JComboBox CB_Genre;
-    private javax.swing.JMenuItem MI_Ajouteritem;
     private javax.swing.JMenuItem MI_ConsultJoueur;
+    private javax.swing.JMenuItem Menu_Arme;
+    private javax.swing.JMenuItem Menu_Armure;
+    private javax.swing.JMenuItem Menu_Habilete;
     private javax.swing.JMenu Menu_Item;
     private javax.swing.JMenu Menu_Joueur;
+    private javax.swing.JMenuItem Menu_Potion;
     private javax.swing.JScrollPane SP_Catalogue;
     private javax.swing.JTextField TB_Type;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }
