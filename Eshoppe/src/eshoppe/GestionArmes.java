@@ -68,7 +68,8 @@ public class GestionArmes extends javax.swing.JDialog {
         setResizable(false);
 
         LBL_AjoutOuModif.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        LBL_AjoutOuModif.setText("Ajouter / modifier Arme");
+        LBL_AjoutOuModif.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LBL_AjoutOuModif.setText("Armes");
 
         jLabel1.setText("Nom");
 
@@ -135,7 +136,7 @@ public class GestionArmes extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(CBX_Mains, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(TBX_Composition, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(65, Short.MAX_VALUE))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -165,8 +166,8 @@ public class GestionArmes extends javax.swing.JDialog {
                                     .addComponent(CBX_Dispo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(LBL_AjoutOuModif)
+                        .addGap(73, 73, 73)
+                        .addComponent(LBL_AjoutOuModif, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(55, 55, 55))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,9 +248,19 @@ public class GestionArmes extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
-        ajouterItem();
-        ajouterArme();
-        CloseForm();
+        if(numitem == -1)
+        {
+            ajouterItem();
+            ajouterArme();
+            CloseForm();
+        }
+        else
+        {
+       //     modifierItem();
+            CloseForm();
+        }
+        
+        
     }//GEN-LAST:event_BTN_OKActionPerformed
 
     private void BTN_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CancelActionPerformed
@@ -303,6 +314,7 @@ public class GestionArmes extends javax.swing.JDialog {
         this.numitem = numitem;
         this.connBD = conn;
         remplirCBX();
+        afficherTitre();
     }
  
     private void ajouterItem()
@@ -323,13 +335,14 @@ public class GestionArmes extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
     }
+    
     private int trouverNumItem()
     {
-        String num = "0";
+        int num = 0;
         try{
             CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.chercherItem(?,?,?,?,?,?,?,?)}");
             //nom, qte, prix,genre,dispo, poids, image
-            cstmS.setInt(1, Integer.parseInt(num));
+            cstmS.registerOutParameter(1, java.sql.Types.INTEGER);///////out
             cstmS.setString(2,TBX_nom.getText());
             cstmS.setInt(3, Integer.parseInt(TBX_Stock.getText()));
             cstmS.setInt(4, Integer.parseInt(TBX_Prix.getText()));
@@ -338,6 +351,8 @@ public class GestionArmes extends javax.swing.JDialog {
             cstmS.setInt(7, Integer.parseInt(TBX_Poids.getText()));
             cstmS.setString(8, TBX_Image.getText());
             cstmS.execute();
+            
+            num = cstmS.getInt(1);
             /*
             ///récupéré le pnum du out
             rst = cstmS.executeQuery();///
@@ -350,8 +365,9 @@ public class GestionArmes extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
         
-        return Integer.parseInt(num);
+        return num;
     }
+    
     private void ajouterArme()
     {
         int num = trouverNumItem();        
@@ -410,6 +426,18 @@ public class GestionArmes extends javax.swing.JDialog {
     {
         setVisible(false);
         dispose();
+    }
+    
+    private void afficherTitre()
+    {
+        if (numitem == -1)
+        {
+            LBL_AjoutOuModif.setText("Ajouter Arme");
+        }
+        else
+        {
+            LBL_AjoutOuModif.setText("Modifier Arme");
+        }        
     }
 
    ConnectionOracle connBD;
