@@ -209,6 +209,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="ANNULER"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_CancelActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_OK">
       <Properties>

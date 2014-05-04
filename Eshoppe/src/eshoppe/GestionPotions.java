@@ -6,6 +6,8 @@
 
 package eshoppe;
 
+import java.sql.*;
+import javax.swing.*;
 /**
  *
  * @author Isabelle
@@ -18,11 +20,16 @@ public class GestionPotions extends javax.swing.JDialog {
      */
     private int numitem;
     private ConnectionOracle connBD;
+    private String SQLGenre = "Select Distinct Genre From Catalogue";
+    private ResultSet rst;
     
+    //Méthode appellée par le catalogue et qui initialise le form et les attributs
     public void setParam(int numitem, ConnectionOracle conn)
     {
         this.numitem = numitem;
         this.connBD = conn;
+        remplirCBX();
+        afficherTitre();        
     }
     public GestionPotions(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -83,6 +90,11 @@ public class GestionPotions extends javax.swing.JDialog {
         jLabel3.setText("# item");
 
         BTN_Cancel.setText("ANNULER");
+        BTN_Cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_CancelActionPerformed(evt);
+            }
+        });
 
         BTN_OK.setText("OK");
         BTN_OK.addActionListener(new java.awt.event.ActionListener() {
@@ -234,8 +246,22 @@ public class GestionPotions extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
-        // TODO add your handling code here:
+        if(numitem == -1)
+        {
+            ajouterItem();  //attributs communs à tous
+            ajouterPotion();//attributs spécifiques
+            CloseForm();
+        }
+        else
+        {
+       //     modifierItem();  // a coder   le catalogue passe le numitiem a modifier dans setparam.
+            CloseForm();
+        }
     }//GEN-LAST:event_BTN_OKActionPerformed
+
+    private void BTN_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CancelActionPerformed
+        CloseForm();
+    }//GEN-LAST:event_BTN_CancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -279,6 +305,110 @@ public class GestionPotions extends javax.swing.JDialog {
         });
     }
 
+    // Procédure générique pour tout genre d'items
+    private void ajouterItem()
+    {
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.insertion(?,?,?,?,?,?,?)}");
+            cstmS.setString(1,TBX_nom.getText());
+            cstmS.setInt(2, Integer.parseInt(TBX_Stock.getText()));
+            cstmS.setInt(3, Integer.parseInt(TBX_Prix.getText()));
+            cstmS.setString(4, CBX_Genre.getSelectedItem().toString());
+            cstmS.setInt(5, CBX_Dispo.getSelectedIndex());
+            cstmS.setInt(6, Integer.parseInt(TBX_Poids.getText()));
+            cstmS.setString(7, TBX_Image.getText());
+            cstmS.executeUpdate();
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+    }
+    //Exécuté après ajouterItem() pour récupérer le numitem qui a été donné par le trigger.
+    //Le numitem sera utilisé pour l'insertion à la table genre.
+    private int trouverNumItem()
+    {
+        int num = 0;
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.chercherItem(?,?,?,?,?,?,?,?)}");
+            cstmS.registerOutParameter(1, java.sql.Types.INTEGER);
+            cstmS.setString(2,TBX_nom.getText());
+            cstmS.setInt(3, Integer.parseInt(TBX_Stock.getText()));
+            cstmS.setInt(4, Integer.parseInt(TBX_Prix.getText()));
+            cstmS.setString(5, CBX_Genre.getSelectedItem().toString());
+            cstmS.setInt(6, CBX_Dispo.getSelectedIndex());
+            cstmS.setInt(7, Integer.parseInt(TBX_Poids.getText()));
+            cstmS.setString(8, TBX_Image.getText());
+            cstmS.execute();
+            
+            num = cstmS.getInt(1);  // on récupère le numitem retourné en "out"
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+        
+        return num;
+    }
+    //fait l'ajout à la table genre spécifique après avoir récupéré le numitem selon les parametres communs.
+    private void ajouterPotion()
+    {
+        int num = trouverNumItem();        
+        try{
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.ajouterPotion(?,?,?)}");            
+            cstmS.setInt(1, num);
+            cstmS.setString(2, TA_Effect.getText());
+            cstmS.setInt(3, Integer.parseInt(TBX_Duree.getText()));   
+            cstmS.executeUpdate();       
+        }catch(SQLException sqe){
+            JOptionPane.showMessageDialog(this, sqe.getMessage());
+        }
+    }
+    //rempli les trois menus déroulants.  Appelé par setParam à l'appel du form par catalogue.
+    private void remplirCBX()
+    {
+        CBX_Dispo.removeAllItems();   
+        // on aurait pu faire une méthode comme listGenre pour Disponible
+        // mais les valeurs sont simples à ajouter "à la main".
+        CBX_Dispo.addItem("0");
+        CBX_Dispo.addItem("1");        
+        ListGenre();
+    }
+   
+    //Récupère les genres de la BD pour remplir le menu déroulant
+    private void ListGenre()
+    {
+        int i = 0;
+        try
+        {
+            Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rst = stm1.executeQuery(SQLGenre);
+            CBX_Genre.removeAllItems();
+            while ( rst.next())
+            {
+                CBX_Genre.addItem(rst.getString("genre"));                
+                i ++;
+            }
+        }
+        catch(SQLException e) {}
+    }
+    //Le nom le dit...  Est appelé par les boutons OK et ANNULER.
+    private void CloseForm()
+    {
+        setVisible(false);
+        dispose();
+    }
+    
+    //Affiche le but de la fenêtre selon la façon que catalogue a appelé le form.
+    //Soit ajouter un nouvel item ou modifier un item existant (lorsque cette option sera disponible.
+    private void afficherTitre()
+    {
+        if (numitem == -1)
+        {
+            LBL_AjoutOuModif.setText("Ajouter Potion");
+        }
+        else
+        {
+            LBL_AjoutOuModif.setText("Modifier Potion");
+        }        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Cancel;
     private javax.swing.JButton BTN_OK;
