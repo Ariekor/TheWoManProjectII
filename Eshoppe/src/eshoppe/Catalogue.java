@@ -522,6 +522,24 @@ public class Catalogue extends javax.swing.JFrame {
     
     // </editor-fold>
     
+    private void Retirer()
+    {
+        if (ZeCatalogue.getSelectedColumnCount() != 0)
+        {
+            try
+            {
+                CallableStatement cstm = conn.getConnection().prepareCall("{call GESTION_CATALOGUE.RETIRERITEM( ? )}");
+                cstm.setInt("PNUMITEM", ObtenirNumSelectedItem());
+                cstm.executeUpdate();
+                RemplirList();
+            }
+            catch (SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
+        }
+        else
+        {
+           JOptionPane.showMessageDialog(null,"Veuillez sélectionner une ligne !" ); 
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -582,6 +600,11 @@ public class Catalogue extends javax.swing.JFrame {
         });
 
         BTN_Retirer.setText("RETIRER");
+        BTN_Retirer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_RetirerActionPerformed(evt);
+            }
+        });
 
         BTN_Fermer.setText("FERMER");
         BTN_Fermer.addActionListener(new java.awt.event.ActionListener() {
@@ -706,6 +729,10 @@ public class Catalogue extends javax.swing.JFrame {
     private void BTN_ModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModActionPerformed
         ModifierSelection();
     }//GEN-LAST:event_BTN_ModActionPerformed
+
+    private void BTN_RetirerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_RetirerActionPerformed
+        Retirer();
+    }//GEN-LAST:event_BTN_RetirerActionPerformed
 
     /**
      * @param args the command line arguments
