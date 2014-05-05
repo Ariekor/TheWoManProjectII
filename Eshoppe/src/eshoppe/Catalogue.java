@@ -56,6 +56,7 @@ public class Catalogue extends javax.swing.JFrame {
         conn.connecter();
         ListCBX();
         RemplirList();
+        BTN_Mod.setEnabled(false);
     }
     
     // <editor-fold defaultstate="collapsed" desc="Remplir catalogue">   

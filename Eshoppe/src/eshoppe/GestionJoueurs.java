@@ -19,12 +19,14 @@ public class GestionJoueurs extends javax.swing.JDialog {
     String sql1 = "SELECT NOMUSAGER, MOTDEPASSE, NOM, PRENOM, CAPITAL FROM JOUEURSRPG order by nomusager";
     ConnectionOracle connBD;
     ResultSet rstUsers;
+    java.awt.Frame parent;
     
     /**
      * Creates new form GestionArmes
      */
     public GestionJoueurs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.parent = parent;
         initComponents();
     }
 
@@ -93,6 +95,11 @@ public class GestionJoueurs extends javax.swing.JDialog {
         TBX_User1.setPreferredSize(new java.awt.Dimension(180, 20));
 
         BTN_Invetaire.setText("INVENTAIRE");
+        BTN_Invetaire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_InvetaireActionPerformed(evt);
+            }
+        });
 
         LB_User.setText("Usager ici");
         LB_User.setMaximumSize(new java.awt.Dimension(180, 14));
@@ -318,6 +325,18 @@ public class GestionJoueurs extends javax.swing.JDialog {
         RechercherUser();
     }//GEN-LAST:event_BN_RechercherActionPerformed
 
+    private void BTN_InvetaireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_InvetaireActionPerformed
+        appelerInventaire();
+    }//GEN-LAST:event_BTN_InvetaireActionPerformed
+
+    private void appelerInventaire()
+    {
+            InventaireJoueurs dialog = new InventaireJoueurs(parent, true);
+            dialog.setParam(LB_User.getText() , connBD);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true); 
+    }
+    
     public void setParam(int numitem, ConnectionOracle conn)
     {
         this.connBD = conn;

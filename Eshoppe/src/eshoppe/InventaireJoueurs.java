@@ -6,18 +6,104 @@
 
 package eshoppe;
 
+import java.awt.BorderLayout;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import java.util.Vector;
+import oracle.jdbc.OracleTypes;
+import oracle.jdbc.oracore.OracleType;
+
 /**
  *
  * @author Isabelle
  */
 public class InventaireJoueurs extends javax.swing.JDialog {
 
-    /**
-     * Creates new form InventaireJoueurs
-     */
+    private String nomUsager;
+    private ConnectionOracle connBD;
+    private ResultSet rst ;
+    private Vector Contenu;
+    private Vector Entete;
+    private JTable ZeCatalogue;
+    private String SQL = "SELECT ca.numitem, nomitem, QUANTITEITEM\n" +
+"      FROM catalogue ca\n" +
+"      INNER JOIN inventairejoueur ij ON ca.numitem = ij.numitem \n" +
+"      where nomusager = ? \n" +
+"      ORDER BY numitem";
+    
+    
     public InventaireJoueurs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    public void setParam(String numitem, ConnectionOracle conn)
+    {
+        this.nomUsager = numitem;
+        this.connBD = conn;
+        FormLoad();
+    }
+    
+    private void FormLoad(){
+        ListInventaire();
+        ZeCatalogue.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    private void ListInventaire(){
+         try
+        {
+            PreparedStatement stm = connBD.getConnection().prepareStatement(SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            stm.setString(1, nomUsager);
+            rst = stm.executeQuery();
+            Contenu = remplirVecteur(rst);
+            Entete = creerEntete();
+            ZeCatalogue = new JTable(Contenu,Entete);
+            SP_Catalogue.setViewportView(ZeCatalogue);
+            this.getContentPane().add(SP_Catalogue,BorderLayout.CENTER);
+            SP_Catalogue.validate();
+            
+        }
+        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
+        
+    }
+    
+    private Vector creerEntete()
+    {
+        Vector vectEntete = new Vector();
+        vectEntete.add("NumItem"); //1
+        vectEntete.add("NomItem"); //2
+        vectEntete.add("Quantite");     //3
+
+
+        return vectEntete;        
+    }
+    private Vector remplirVecteur(ResultSet rst){
+        Vector v = new Vector();
+        Vector ligne = null;
+        int i = 0;
+        try
+        {            
+            while (rst.next()){
+                ligne = new Vector();
+                i++;
+                ligne.add(rst.getInt(1));
+                i++;
+                ligne.add(rst.getString(2));
+                i++;
+                ligne.add(rst.getInt(3));               
+                v.add(ligne); 
+            }            
+        }
+        catch (SQLException se)
+        {
+            JOptionPane.showMessageDialog(this, se.getMessage() + i);
+        }
+        return v;
     }
 
     /**
@@ -42,6 +128,11 @@ public class InventaireJoueurs extends javax.swing.JDialog {
         LBL_AjoutOuModif.setText("Inventaire Joueurs");
 
         BTN_Fermer1.setText("FERMER");
+        BTN_Fermer1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_Fermer1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Usager");
 
@@ -77,8 +168,8 @@ public class InventaireJoueurs extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(LB_User))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(SP_Catalogue, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(SP_Catalogue, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addComponent(BTN_Fermer1)
                 .addContainerGap())
         );
@@ -86,6 +177,15 @@ public class InventaireJoueurs extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BTN_Fermer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Fermer1ActionPerformed
+        CloseForm();
+    }//GEN-LAST:event_BTN_Fermer1ActionPerformed
+
+    private void CloseForm()
+    {
+        setVisible(false);
+        dispose();
+    }
     /**
      * @param args the command line arguments
      */
