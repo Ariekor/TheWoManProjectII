@@ -225,6 +225,12 @@ pip-log.txt
 private.properties
 private.xml
 project.properties
+<<<<<<< HEAD
 /EshopeWeb/nbproject/private/
 /Eshoppe/nbproject/private/
 /Magasin/nbproject/private/
+=======
+
+/Eshoppe/nbproject/private/
+/Eshoppe/nbproject/project.properties
+>>>>>>> ebccd9b6aa76b5a9d16e40b092a767eb058c9b37
