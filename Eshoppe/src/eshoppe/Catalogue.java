@@ -358,6 +358,7 @@ public class Catalogue extends javax.swing.JFrame {
     private void CloseForm()
     {
         setVisible(false);
+        conn.deconnecter();
         dispose();
     }
     
@@ -542,8 +543,11 @@ public class Catalogue extends javax.swing.JFrame {
             try
             {
                 CallableStatement cstm = conn.getConnection().prepareCall("{call GESTION_CATALOGUE.RETIRERITEM( ? )}");
-                cstm.setInt("PNUMITEM", ObtenirNumSelectedItem());
+                int numitem = ObtenirNumSelectedItem();
+                cstm.setInt("PNUMITEM",numitem );
                 cstm.executeUpdate();
+                //delete panier where numitem = bla
+                retirerDesPaniers(numitem);
                 RemplirList();
             }
             catch (SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
@@ -552,6 +556,17 @@ public class Catalogue extends javax.swing.JFrame {
         {
            JOptionPane.showMessageDialog(null,"Veuillez sélectionner une ligne !" ); 
         }
+    }
+    
+    private void retirerDesPaniers(int numitem)
+    {
+        String sqlPanier = "Delete panier where numitem = "+numitem;
+         try
+        {
+            Statement stm = conn.getConnection().createStatement();
+            stm.executeUpdate(sqlPanier);
+        }
+        catch (SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
     }
 
    private void OuvrireJoueur()
@@ -587,6 +602,11 @@ public class Catalogue extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Catalogue");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         CB_Genre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -805,6 +825,10 @@ public class Catalogue extends javax.swing.JFrame {
     private void Menu_PotionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_PotionActionPerformed
         AjouterPotion();
     }//GEN-LAST:event_Menu_PotionActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        CloseForm();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

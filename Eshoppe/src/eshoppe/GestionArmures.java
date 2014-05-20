@@ -264,9 +264,12 @@ public class GestionArmures extends javax.swing.JDialog {
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
         if(numitem == -1)
         {
-            ajouterItem();  //attributs communs à tous
-            ajouterArmure();//attributs spécifiques
-            CloseForm();
+            if(validerChampsGeneraux() && validerChampsGenre())
+            {
+                ajouterItem(); //attributs communs à tous
+                ajouterArmure(); //attributs spécifiques
+                CloseForm();
+            }
         }
         else
         {
@@ -337,40 +340,15 @@ public class GestionArmures extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
     }
-    //Exécuté après ajouterItem() pour récupérer le numitem qui a été donné par le trigger.
-    //Le numitem sera utilisé pour l'insertion à la table genre.
-    private int trouverNumItem()
-    {
-        int num = 0;
-        try{
-            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.chercherItem(?,?,?,?,?,?,?,?)}");
-            cstmS.registerOutParameter(1, java.sql.Types.INTEGER);
-            cstmS.setString(2,TBX_nom.getText());
-            cstmS.setInt(3, Integer.parseInt(TBX_Stock.getText()));
-            cstmS.setInt(4, Integer.parseInt(TBX_Prix.getText()));
-            cstmS.setString(5, CBX_Genre.getSelectedItem().toString());
-            cstmS.setInt(6, CBX_Dispo.getSelectedIndex());
-            cstmS.setInt(7, Integer.parseInt(TBX_Poids.getText()));
-            cstmS.setString(8, TBX_Image.getText());
-            cstmS.execute();
-            
-            num = cstmS.getInt(1);  // on récupère le numitem retourné en "out"
-        }catch(SQLException sqe){
-            JOptionPane.showMessageDialog(this, sqe.getMessage());
-        }
-        
-        return num;
-    }
-    //fait l'ajout à la table genre spécifique après avoir récupéré le numitem selon les parametres communs.
+    
+    //fait l'ajout à la table genre spécifique
     private void ajouterArmure()
-    {
-        int num = trouverNumItem();        
+    { 
         try{
-            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.ajouterArme(?,?,?,?)}");            
-            cstmS.setInt(1, num);
-            cstmS.setInt(2, Integer.parseInt(TBX_Efficacite.getText()));
-            cstmS.setString(3, TBX_Composition.getText());
-            cstmS.setString(4, CBX_Taille.getSelectedItem().toString()); 
+            CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.ajouterArmure(?,?,?)}");
+            cstmS.setInt(1, Integer.parseInt(TBX_Efficacite.getText()));
+            cstmS.setString(2, TBX_Composition.getText());
+            cstmS.setString(3, CBX_Taille.getSelectedItem().toString());
             cstmS.executeUpdate();       
         }catch(SQLException sqe){
             JOptionPane.showMessageDialog(this, sqe.getMessage());
@@ -441,6 +419,58 @@ public class GestionArmures extends javax.swing.JDialog {
         {
             LBL_AjoutOuModif.setText("Modifier Armure");
         }        
+    }
+     private boolean validerChampsGeneraux()
+    {
+        boolean valide = true;
+        if (TBX_nom.getText().isEmpty())
+        {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane,"Entrez un nom.");
+        }if (TBX_Stock.getText().isEmpty() || !estUnEntier(TBX_Stock.getText()))
+        {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane,"Entrez une quantité valide.");
+        }
+        if (TBX_Prix.getText().isEmpty() || !estUnEntier(TBX_Prix.getText()))
+        {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane,"Entrez un prix valide.");
+        }
+        if (TBX_Poids.getText() != null && !estUnEntier(TBX_Poids.getText()))
+        {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane,"Entrez un poids valide.");
+        }
+        
+        return valide;
+    }
+    
+    private boolean validerChampsGenre()
+    {
+       boolean valide = true;
+       if (TBX_Composition.getText().isEmpty())
+        {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane,"Entrez une composition.");
+        }
+       if (TBX_Efficacite.getText().isEmpty() || !estUnEntier(TBX_Efficacite.getText()))
+        {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane,"Entrez une défense valide.");
+        }
+       return valide;
+    }
+    boolean estUnEntier (String val)
+    {
+        boolean valide = true;
+        try
+        {
+            Integer.parseInt(val);
+        }
+        catch (Exception e){valide = false;}
+        
+        return valide;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
