@@ -31,23 +31,18 @@ public class InventaireJoueurs extends javax.swing.JDialog {
     private Vector Contenu;
     private Vector Entete;
     private JTable ZeCatalogue;
-    private String SQL = "SELECT ca.numitem, nomitem, QUANTITEITEM\n" +
-"      FROM catalogue ca\n" +
-"      INNER JOIN inventairejoueur ij ON ca.numitem = ij.numitem \n" +
-"      where nomusager = ? \n" +
-"      ORDER BY numitem";
-    
-    
+     
     public InventaireJoueurs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
-    public void setParam(String numitem, ConnectionOracle conn)
+    public void setParam(String user, ConnectionOracle conn)
     {
-        this.nomUsager = numitem;
+        this.nomUsager = user;
         this.connBD = conn;
         FormLoad();
+        LB_User.setText(user);
     }
     
     private void FormLoad(){
@@ -57,9 +52,12 @@ public class InventaireJoueurs extends javax.swing.JDialog {
     private void ListInventaire(){
          try
         {
-            PreparedStatement stm = connBD.getConnection().prepareStatement(SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            stm.setString(1, nomUsager);
-            rst = stm.executeQuery();
+            CallableStatement stmListe = connBD.getConnection().prepareCall( "{ ? = call Gestion_Inventairejoueur.lister( ? )}" );
+            stmListe.registerOutParameter(1, OracleTypes.CURSOR);
+            stmListe.setString(2, nomUsager);
+            stmListe.execute();
+            rst = (ResultSet)stmListe.getObject(1);
+                        
             Contenu = remplirVecteur(rst);
             Entete = creerEntete();
             ZeCatalogue = new JTable(Contenu,Entete);

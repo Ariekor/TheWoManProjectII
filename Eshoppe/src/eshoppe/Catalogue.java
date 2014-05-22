@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.ListSelectionModel;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -25,7 +26,6 @@ import javax.swing.ListSelectionModel;
 public class Catalogue extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Attributs">
     private ConnectionOracle conn = new ConnectionOracle();
-    private String SQLGenre = "Select Distinct Genre From Catalogue";
     private String SQLCatalogue = "Select * from vuearmes ";
     private String sqlArme = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, efficacité, composition, mains\n" +
                              "FROM catalogue ca\n" +
@@ -93,11 +93,9 @@ public class Catalogue extends javax.swing.JFrame {
             ZeCatalogue = new JTable(Contenu,Entete);
             SP_Catalogue.setViewportView(ZeCatalogue);
             this.getContentPane().add(SP_Catalogue,BorderLayout.CENTER);
-            SP_Catalogue.validate();
-            
+            SP_Catalogue.validate();            
         }
-        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
-        
+        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}        
     }
     
      private void RemplirListPotion()
@@ -112,11 +110,9 @@ public class Catalogue extends javax.swing.JFrame {
             ZeCatalogue = new JTable(Contenu,Entete);
             SP_Catalogue.setViewportView(ZeCatalogue);
             this.getContentPane().add(SP_Catalogue,BorderLayout.CENTER);
-            SP_Catalogue.validate();
-            
+            SP_Catalogue.validate();            
         }
-        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}
-        
+        catch(SQLException e){JOptionPane.showMessageDialog(this, e.getMessage());}        
     }
      
     private void RemplirListArmure()
@@ -344,8 +340,11 @@ public class Catalogue extends javax.swing.JFrame {
     {
         try
         {
-            Statement stm = conn.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rst = stm.executeQuery(SQLGenre);
+            CallableStatement stmList = conn.getConnection().prepareCall("{ ? = call Gestion_Catalogue.listergenres }" );
+            stmList.registerOutParameter(1, OracleTypes.CURSOR);
+            stmList.execute();
+            rst = (ResultSet)stmList.getObject(1);
+            
             CB_Genre.removeAllItems();
             while(rst.next())
             {

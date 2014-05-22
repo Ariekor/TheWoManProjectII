@@ -158,7 +158,7 @@ public class ModifierQte extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TBX_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TBX_newActionPerformed
-        // TODO add your handling code here:
+        // Pas trouvé tbx pour supprimer...
     }//GEN-LAST:event_TBX_newActionPerformed
 
     private void BTN_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CancelActionPerformed

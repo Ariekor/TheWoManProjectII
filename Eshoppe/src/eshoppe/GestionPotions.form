@@ -55,10 +55,7 @@
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="CBX_Genre" alignment="0" pref="182" max="32767" attributes="0"/>
-                                  <Component id="TBX_nom" alignment="0" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="TBX_nom" min="-2" pref="182" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
@@ -71,6 +68,7 @@
                                   <Component id="TBX_Stock" min="-2" pref="56" max="-2" attributes="0"/>
                                   <Component id="CBX_Dispo" min="-2" pref="72" max="-2" attributes="0"/>
                                   <Component id="TBX_Image" alignment="0" min="-2" pref="179" max="-2" attributes="0"/>
+                                  <Component id="LB_Genre" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -141,10 +139,10 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="CBX_Genre" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                  <Component id="LB_Genre" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="TBX_Poids" min="-2" max="-2" attributes="0"/>
@@ -243,18 +241,6 @@
         <Property name="text" type="java.lang.String" value="Prix"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="CBX_Genre">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
-          </StringArray>
-        </Property>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
         <Property name="text" type="java.lang.String" value="Poids"/>
@@ -314,6 +300,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="TBX_Image">
+    </Component>
+    <Component class="javax.swing.JLabel" name="LB_Genre">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Potion"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

@@ -20,7 +20,6 @@ public class GestionPotions extends javax.swing.JDialog {
      */
     private int numitem;
     private ConnectionOracle connBD;
-    private String SQLGenre = "Select Distinct Genre From Catalogue";
     private ResultSet rst;
     
     //Méthode appellée par le catalogue et qui initialise le form et les attributs
@@ -62,7 +61,6 @@ public class GestionPotions extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         TBX_Prix = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        CBX_Genre = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         TBX_Poids = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -75,6 +73,7 @@ public class GestionPotions extends javax.swing.JDialog {
         CBX_Dispo = new javax.swing.JComboBox();
         jLabel12 = new javax.swing.JLabel();
         TBX_Image = new javax.swing.JTextField();
+        LB_Genre = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion Armes");
@@ -109,8 +108,6 @@ public class GestionPotions extends javax.swing.JDialog {
 
         jLabel5.setText("Prix");
 
-        CBX_Genre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel6.setText("Poids");
 
         jLabel7.setText("Disponible");
@@ -126,6 +123,8 @@ public class GestionPotions extends javax.swing.JDialog {
         CBX_Dispo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel12.setText("Image");
+
+        LB_Genre.setText("Potion");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,9 +147,7 @@ public class GestionPotions extends javax.swing.JDialog {
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(CBX_Genre, javax.swing.GroupLayout.Alignment.LEADING, 0, 182, Short.MAX_VALUE)
-                                    .addComponent(TBX_nom, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addComponent(TBX_nom, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,7 +157,8 @@ public class GestionPotions extends javax.swing.JDialog {
                                         .addComponent(TBX_Poids, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(TBX_Stock, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(CBX_Dispo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TBX_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(TBX_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(LB_Genre))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel11)
@@ -211,9 +209,9 @@ public class GestionPotions extends javax.swing.JDialog {
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CBX_Genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel4)
+                    .addComponent(LB_Genre))
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(TBX_Poids, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -317,7 +315,7 @@ public class GestionPotions extends javax.swing.JDialog {
             cstmS.setString(1,TBX_nom.getText());
             cstmS.setInt(2, Integer.parseInt(TBX_Stock.getText()));
             cstmS.setInt(3, Integer.parseInt(TBX_Prix.getText()));
-            cstmS.setString(4, CBX_Genre.getSelectedItem().toString());
+            cstmS.setString(4, LB_Genre.getText());
             cstmS.setInt(5, CBX_Dispo.getSelectedIndex());
             cstmS.setInt(6, Integer.parseInt(TBX_Poids.getText()));
             cstmS.setString(7, TBX_Image.getText());
@@ -346,27 +344,9 @@ public class GestionPotions extends javax.swing.JDialog {
         // on aurait pu faire une méthode comme listGenre pour Disponible
         // mais les valeurs sont simples à ajouter "à la main".
         CBX_Dispo.addItem("0");
-        CBX_Dispo.addItem("1");        
-        ListGenre();
+        CBX_Dispo.addItem("1");                
     }
    
-    //Récupère les genres de la BD pour remplir le menu déroulant
-    private void ListGenre()
-    {
-        int i = 0;
-        try
-        {
-            Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rst = stm1.executeQuery(SQLGenre);
-            CBX_Genre.removeAllItems();
-            while ( rst.next())
-            {
-                CBX_Genre.addItem(rst.getString("genre"));                
-                i ++;
-            }
-        }
-        catch(SQLException e) {}
-    }
     //Le nom le dit...  Est appelé par les boutons OK et ANNULER.
     private void CloseForm()
     {
@@ -394,7 +374,12 @@ public class GestionPotions extends javax.swing.JDialog {
         {
             valide = false;
             JOptionPane.showMessageDialog(rootPane,"Entrez un nom.");
-        }if (TBX_Stock.getText().isEmpty() || !estUnEntier(TBX_Stock.getText()))
+        }
+        else if(TBX_nom.getText().length() > 20) {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane, "Nom trop long.");
+        } 
+        if (TBX_Stock.getText().isEmpty() || !estUnEntier(TBX_Stock.getText()))
         {
             valide = false;
             JOptionPane.showMessageDialog(rootPane,"Entrez une quantité valide.");
@@ -408,8 +393,7 @@ public class GestionPotions extends javax.swing.JDialog {
         {
             valide = false;
             JOptionPane.showMessageDialog(rootPane,"Entrez un poids valide.");
-        }
-        
+        }        
         return valide;
     }
     
@@ -420,6 +404,11 @@ public class GestionPotions extends javax.swing.JDialog {
         {
             valide = false;
             JOptionPane.showMessageDialog(rootPane,"Entrez un effet.");
+        }
+       if (TA_Effect.getText().length() > 60)
+        {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane,"Description de l'effet trop longue.");
         }
        if (TBX_Duree.getText().isEmpty() || !estUnEntier(TBX_Duree.getText()))
         {
@@ -435,7 +424,7 @@ public class GestionPotions extends javax.swing.JDialog {
         {
             Integer.parseInt(val);
         }
-        catch (Exception e){valide = false;}
+        catch (NumberFormatException e){valide = false;}
         
         return valide;
     }
@@ -444,9 +433,9 @@ public class GestionPotions extends javax.swing.JDialog {
     private javax.swing.JButton BTN_Cancel;
     private javax.swing.JButton BTN_OK;
     private javax.swing.JComboBox CBX_Dispo;
-    private javax.swing.JComboBox CBX_Genre;
     private javax.swing.JLabel LBL_AjoutOuModif;
     private javax.swing.JLabel LBL_Key;
+    private javax.swing.JLabel LB_Genre;
     private javax.swing.JTextArea TA_Effect;
     private javax.swing.JTextField TBX_Duree;
     private javax.swing.JTextField TBX_Image;

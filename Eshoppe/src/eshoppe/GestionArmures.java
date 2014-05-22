@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package eshoppe;
 
 import java.sql.*;
 import javax.swing.*;
+
 /**
  *
  * @author Isabelle
@@ -19,24 +19,21 @@ public class GestionArmures extends javax.swing.JDialog {
      */
     private int numitem;
     private ConnectionOracle connBD;
-    private String SQLGenre = "Select Distinct Genre From Catalogue";
     private String SQLTaille = "Select Distinct Taille From Armures";
     private ResultSet rst;
-    
+
     //Méthode appellée par le catalogue et qui initialise le form et les attributs
-    public void setParam(int numitem, ConnectionOracle conn)
-    {
+    public void setParam(int numitem, ConnectionOracle conn) {
         this.numitem = numitem;
         this.connBD = conn;
         remplirCBX();
         afficherTitre();
     }
-    
+
     public GestionArmures(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
-   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -64,7 +61,6 @@ public class GestionArmures extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         TBX_Prix = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        CBX_Genre = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         TBX_Poids = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -78,6 +74,7 @@ public class GestionArmures extends javax.swing.JDialog {
         CBX_Dispo = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
         TBX_Image = new javax.swing.JTextField();
+        LB_Genre = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion Armes");
@@ -112,8 +109,6 @@ public class GestionArmures extends javax.swing.JDialog {
 
         jLabel5.setText("Prix");
 
-        CBX_Genre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel6.setText("Poids");
 
         jLabel7.setText("Disponible");
@@ -129,6 +124,8 @@ public class GestionArmures extends javax.swing.JDialog {
         CBX_Dispo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel11.setText("Image");
+
+        LB_Genre.setText("Armure");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,10 +162,9 @@ public class GestionArmures extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(CBX_Genre, javax.swing.GroupLayout.Alignment.LEADING, 0, 182, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(TBX_Efficacite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TBX_nom, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(TBX_nom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +173,8 @@ public class GestionArmures extends javax.swing.JDialog {
                                         .addComponent(TBX_Prix)
                                         .addComponent(TBX_Poids, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(TBX_Stock, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(CBX_Dispo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(CBX_Dispo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(LB_Genre))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -218,9 +215,9 @@ public class GestionArmures extends javax.swing.JDialog {
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CBX_Genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel4)
+                    .addComponent(LB_Genre))
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(TBX_Poids, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -262,18 +259,14 @@ public class GestionArmures extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_OKActionPerformed
-        if(numitem == -1)
-        {
-            if(validerChampsGeneraux() && validerChampsGenre())
-            {
+        if (numitem == -1) {
+            if (validerChampsGeneraux() && validerChampsGenre()) {
                 ajouterItem(); //attributs communs à tous
                 ajouterArmure(); //attributs spécifiques
                 CloseForm();
             }
-        }
-        else
-        {
-       //     modifierItem();  // a coder   le catalogue passe le numitiem a modifier dans setparam.
+        } else {
+            //     modifierItem();  // a coder   le catalogue passe le numitiem a modifier dans setparam.
             CloseForm();
         }
     }//GEN-LAST:event_BTN_OKActionPerformed
@@ -323,164 +316,142 @@ public class GestionArmures extends javax.swing.JDialog {
             }
         });
     }
+
     // Procédure générique pour tout genre d'items
-    private void ajouterItem()
-    {
-        try{
+
+    private void ajouterItem() {
+        try {
             CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.insertion(?,?,?,?,?,?,?)}");
-            cstmS.setString(1,TBX_nom.getText());
+            cstmS.setString(1, TBX_nom.getText());
             cstmS.setInt(2, Integer.parseInt(TBX_Stock.getText()));
             cstmS.setInt(3, Integer.parseInt(TBX_Prix.getText()));
-            cstmS.setString(4, CBX_Genre.getSelectedItem().toString());
+            cstmS.setString(4, LB_Genre.getText());
             cstmS.setInt(5, CBX_Dispo.getSelectedIndex());
             cstmS.setInt(6, Integer.parseInt(TBX_Poids.getText()));
             cstmS.setString(7, TBX_Image.getText());
             cstmS.executeUpdate();
-        }catch(SQLException sqe){
+        } catch (SQLException sqe) {
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
     }
-    
+
     //fait l'ajout à la table genre spécifique
-    private void ajouterArmure()
-    { 
-        try{
+    private void ajouterArmure() {
+        try {
             CallableStatement cstmS = connBD.getConnection().prepareCall("{call Gestion_Catalogue.ajouterArmure(?,?,?)}");
             cstmS.setInt(1, Integer.parseInt(TBX_Efficacite.getText()));
             cstmS.setString(2, TBX_Composition.getText());
             cstmS.setString(3, CBX_Taille.getSelectedItem().toString());
-            cstmS.executeUpdate();       
-        }catch(SQLException sqe){
+            cstmS.executeUpdate();
+        } catch (SQLException sqe) {
             JOptionPane.showMessageDialog(this, sqe.getMessage());
         }
     }
+
     //rempli les trois menus déroulants.  Appelé par setParam à l'appel du form par catalogue.
-    private void remplirCBX()
-    {
-        CBX_Dispo.removeAllItems();   
+
+    private void remplirCBX() {
+        CBX_Dispo.removeAllItems();
         // on aurait pu faire une méthode comme listGenre et listTaille pour Disponible
         // mais les valeurs sont simples à ajouter "à la main".
         CBX_Dispo.addItem("0");
-        CBX_Dispo.addItem("1");        
-        ListGenre();
+        CBX_Dispo.addItem("1");
         ListTaille();
     }
+
     //Récupère les tailles de la BD pour remplir le menu déroulant
-    private void ListTaille()
-    {
+
+    private void ListTaille() {
         int i = 0;
-        try
-        {
+        try {
             Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rst = stm1.executeQuery(SQLTaille);
             CBX_Taille.removeAllItems();
-            while ( rst.next())
-            {
-                CBX_Taille.addItem(rst.getString("taille"));                
-                i ++;
+            while (rst.next()) {
+                CBX_Taille.addItem(rst.getString("taille"));
+                i++;
             }
+        } catch (SQLException e) {
         }
-        catch(SQLException e) {}
     }
-    
-    //Récupère les genres de la BD pour remplir le menu déroulant
-    private void ListGenre()
-    {
-        int i = 0;
-        try
-        {
-            Statement stm1 = connBD.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rst = stm1.executeQuery(SQLGenre);
-            CBX_Genre.removeAllItems();
-            while ( rst.next())
-            {
-                CBX_Genre.addItem(rst.getString("genre"));                
-                i ++;
-            }
-        }
-        catch(SQLException e) {}
-    }
+
     //Le nom le dit...  Est appelé par les boutons OK et ANNULER.
-    private void CloseForm()
-    {
+    private void CloseForm() {
         setVisible(false);
         dispose();
     }
-    
+
     //Affiche le but de la fenêtre selon la façon que catalogue a appelé le form.
     //Soit ajouter un nouvel item ou modifier un item existant (lorsque cette option sera disponible.
-    private void afficherTitre()
-    {
-        if (numitem == -1)
-        {
+    private void afficherTitre() {
+        if (numitem == -1) {
             LBL_AjoutOuModif.setText("Ajouter Armure");
-        }
-        else
-        {
+        } else {
             LBL_AjoutOuModif.setText("Modifier Armure");
-        }        
+        }
     }
-     private boolean validerChampsGeneraux()
-    {
+
+    private boolean validerChampsGeneraux() {
         boolean valide = true;
-        if (TBX_nom.getText().isEmpty())
-        {
+        if (TBX_nom.getText().isEmpty()) {
             valide = false;
-            JOptionPane.showMessageDialog(rootPane,"Entrez un nom.");
-        }if (TBX_Stock.getText().isEmpty() || !estUnEntier(TBX_Stock.getText()))
-        {
+            JOptionPane.showMessageDialog(rootPane, "Entrez un nom.");
+        } else if (TBX_nom.getText().length() > 20) {
             valide = false;
-            JOptionPane.showMessageDialog(rootPane,"Entrez une quantité valide.");
+            JOptionPane.showMessageDialog(rootPane, "Nom trop long.");
         }
-        if (TBX_Prix.getText().isEmpty() || !estUnEntier(TBX_Prix.getText()))
-        {
+        if (TBX_Stock.getText().isEmpty() || !estUnEntier(TBX_Stock.getText())) {
             valide = false;
-            JOptionPane.showMessageDialog(rootPane,"Entrez un prix valide.");
+            JOptionPane.showMessageDialog(rootPane, "Entrez une quantité valide.");
         }
-        if (TBX_Poids.getText() != null && !estUnEntier(TBX_Poids.getText()))
-        {
+        if (TBX_Prix.getText().isEmpty() || !estUnEntier(TBX_Prix.getText())) {
             valide = false;
-            JOptionPane.showMessageDialog(rootPane,"Entrez un poids valide.");
+            JOptionPane.showMessageDialog(rootPane, "Entrez un prix valide.");
         }
-        
+        if (TBX_Poids.getText() != null && !estUnEntier(TBX_Poids.getText())) {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane, "Entrez un poids valide.");
+        }
+
         return valide;
     }
-    
-    private boolean validerChampsGenre()
-    {
-       boolean valide = true;
-       if (TBX_Composition.getText().isEmpty())
-        {
-            valide = false;
-            JOptionPane.showMessageDialog(rootPane,"Entrez une composition.");
-        }
-       if (TBX_Efficacite.getText().isEmpty() || !estUnEntier(TBX_Efficacite.getText()))
-        {
-            valide = false;
-            JOptionPane.showMessageDialog(rootPane,"Entrez une défense valide.");
-        }
-       return valide;
-    }
-    boolean estUnEntier (String val)
-    {
+
+    private boolean validerChampsGenre() {
         boolean valide = true;
-        try
-        {
+        if (TBX_Composition.getText().isEmpty()) {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane, "Entrez une composition.");
+        } 
+        else if (TBX_Composition.getText().length() > 20) {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane, "Composition trop longue.");
+        }
+        if (TBX_Efficacite.getText().isEmpty() || !estUnEntier(TBX_Efficacite.getText())) {
+            valide = false;
+            JOptionPane.showMessageDialog(rootPane, "Entrez une défense valide.");
+        }
+        return valide;
+    }
+
+    boolean estUnEntier(String val) {
+        boolean valide = true;
+        try {
             Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            valide = false;
         }
-        catch (Exception e){valide = false;}
-        
+
         return valide;
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_Cancel;
     private javax.swing.JButton BTN_OK;
     private javax.swing.JComboBox CBX_Dispo;
-    private javax.swing.JComboBox CBX_Genre;
     private javax.swing.JComboBox CBX_Taille;
     private javax.swing.JLabel LBL_AjoutOuModif;
     private javax.swing.JLabel LBL_Key;
+    private javax.swing.JLabel LB_Genre;
     private javax.swing.JTextField TBX_Composition;
     private javax.swing.JTextField TBX_Efficacite;
     private javax.swing.JTextField TBX_Image;

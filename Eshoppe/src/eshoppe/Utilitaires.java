@@ -11,7 +11,7 @@ package eshoppe;
  * @author Isabelle
  */
 public class Utilitaires {
-    //contient des méthodes réutilisables
+    //contient des méthodes réutilisables... aurait dû en contenir plus... ;)
     static String retourneNullsiVide(String val)
     {
         if(val.equals(""))
