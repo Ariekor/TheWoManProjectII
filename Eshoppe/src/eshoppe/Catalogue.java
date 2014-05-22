@@ -25,8 +25,8 @@ import oracle.jdbc.OracleTypes;
  */
 public class Catalogue extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Attributs">
-    private ConnectionOracle conn = new ConnectionOracle();
-    private String SQLCatalogue = "Select * from vuearmes ";
+    private ConnectionOracle conn = new ConnectionOracle();  
+    //Pour data-grid-view, les requêtes stockées ne fonctionnes pas...
     private String sqlArme = "SELECT ca.numitem, nomitem, quantite, prix, genre, disponible, poids, image, efficacité, composition, mains\n" +
                              "FROM catalogue ca\n" +
                              "INNER JOIN armes ar ON ca.numitem = ar.numitem  where nomitem like ? \n" +
